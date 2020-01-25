@@ -19,11 +19,11 @@ void Renderer::prepare()
 	glClearColor(0.53f, 0.81f, 0.98f, 1.0f);
 }
 
-void Renderer::render(Entity* entity, StaticShader* static_shader)
+void Renderer::render(unique_ptr<Entity>& entity, StaticShader* static_shader)
 {
-  TexturedModel* textured_model = entity->getTexturedModel();
-	RawModel* raw_model = textured_model->getRawModel();
-  ModelTexture* model_texture = textured_model->getModelTexture();
+  shared_ptr<TexturedModel> textured_model = entity->getTexturedModel();
+	shared_ptr<RawModel> raw_model = textured_model->getRawModel();
+  shared_ptr<ModelTexture> model_texture = textured_model->getModelTexture();
 
 	glBindVertexArray(raw_model->getVaoID());
 

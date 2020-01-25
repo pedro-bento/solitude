@@ -8,6 +8,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
+#include <memory>
+using namespace std;
+
 #include "../models/raw_model.h"
 #include "../models/textured_model.h"
 #include "../textures/model_texture.h"
@@ -25,7 +28,7 @@ public:
   ~Renderer();
 
   void prepare();
-  void render(Entity* entity, StaticShader* static_shader);
+  void render(unique_ptr<Entity>& entity, StaticShader* static_shader);
 };
 
 #endif // RENDERER_H

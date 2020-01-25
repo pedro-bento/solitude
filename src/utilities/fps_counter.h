@@ -8,6 +8,7 @@
 class FpsCounter
 {
   int frames;
+  float last_time;
 
 public:
   FpsCounter();

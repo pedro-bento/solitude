@@ -1,9 +1,17 @@
 #include "application.h"
 
 Application::Application()
-: window(1280,720, "0 FSP"), camera(&window),
+: window(1280,720, "0 FSP"),
+  camera(&window),
   renderer(70, 1280/720, 0.1f, 100.0f, &static_shader)
 {
+  entities.push_back(
+    make_unique<Entity>
+      (loadTexturedModel("./res/stall.obj",
+                         "./res/stallTexture.bmp"),
+           vec3(0.0f,0.0f,0.0f),
+           vec3(0.0f,0.0f,0.0f),
+           1.0f));
 }
 
 Application::~Application()
@@ -12,26 +20,20 @@ Application::~Application()
 
 void Application::run()
 {
-  vector<unsigned int> indices;
-	vector<GLfloat> vertices;
-	vector<GLfloat> uvs;
-	vector<GLfloat> normals;
-	bool res = loadAssImp("./res/stall.obj", indices, vertices, uvs, normals);
-
-  RawModel raw_model = loadRawModel(vertices, indices);
-  ModelTexture model_texture = loadModelTexture(uvs, "./res/stallTexture.bmp");
-  TexturedModel textured_model(&raw_model, &model_texture);
-  Entity entity = Entity(&textured_model, vec3(0.0f,0.0f,0.0f), vec3(0.0f,0.0f,0.0f), 1.0f);
+  float current_time, last_time = glfwGetTime();
 
   while(!glfwWindowShouldClose(window.getWindow()))
   {
-    camera.update();
+    current_time = glfwGetTime();
     fps_counter.update(&window);
+    camera.update(current_time - last_time);
+    last_time = current_time;
 
     renderer.prepare();
     static_shader.start();
     static_shader.loadViewMatrix(&camera);
-    renderer.render(&entity, &static_shader);
+    for(auto& entity : entities)
+      renderer.render(entity, &static_shader);
     static_shader.stop();
 
     glfwSwapBuffers(window.getWindow());

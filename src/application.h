@@ -5,6 +5,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <memory>
+using namespace std;
+
 #include "window.h"
 #include "./entities/camera.h"
 #include "./utilities/fps_counter.h"
@@ -19,6 +22,7 @@ class Application
   FpsCounter fps_counter;
   StaticShader static_shader;
   Renderer renderer;
+  vector<unique_ptr<Entity>> entities;
 
 public:
   Application();

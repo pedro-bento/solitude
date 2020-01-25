@@ -1,9 +1,8 @@
 #include "fps_counter.h"
 
 FpsCounter::FpsCounter()
-: frames(0)
+: frames(0), last_time(glfwGetTime())
 {
-  glfwSetTime(0.0f);
 }
 
 FpsCounter::~FpsCounter()
@@ -12,18 +11,19 @@ FpsCounter::~FpsCounter()
 
 void FpsCounter::update(Window* window)
 {
-  double elapsedTime = glfwGetTime();
+  float current_time = glfwGetTime();
+  float elapsed_time = current_time - last_time;
   frames++;
 
-  if(elapsedTime >= 1.0)
+  if(elapsed_time >= 2.0)
   {
-    int fps = double(frames) / elapsedTime;
+    int fps = float(frames) / elapsed_time;
 
     std::string fps_string(std::to_string(fps) + " FPS");
 
     glfwSetWindowTitle(window->getWindow(), fps_string.c_str());
 
-    glfwSetTime(0.0f);
+    last_time = current_time;
     frames = 0;
   }
 }

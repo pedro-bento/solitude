@@ -5,10 +5,8 @@ Camera::Camera(Window *_window)
 {
 }
 
-void Camera::update()
+void Camera::update(float elapsed_time)
 {
-  float elapsed_time = 1.0f;
-
   double xpos, ypos;
   glfwGetCursorPos(window->getWindow(), &xpos, &ypos);
   glfwSetCursorPos(window->getWindow(), window->getWidth() / 2, window->getHeight() / 2);

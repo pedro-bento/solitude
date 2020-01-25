@@ -7,6 +7,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
+#include <iostream>
+using namespace std;
+
 #include "../window.h"
 
 class Camera
@@ -15,8 +18,8 @@ class Camera
 	float pitch = 0.0f;
 	float yaw = 0.0f;
 	float roll = 0.0f;
-	float mouse_speed = 0.001f;
-	float speed = 0.03f;
+	float mouse_speed = 0.15f;
+	float speed = 8.5f;
 	Window* window;
 
 public:
@@ -27,7 +30,7 @@ public:
   float getPitch() { return pitch; }
   float getYaw() { return yaw; }
 
-	void update();
+	void update(float elapsed_time);
 };
 
 #endif
