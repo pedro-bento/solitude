@@ -15,8 +15,8 @@ class Camera
 	float pitch = 0.0f;
 	float yaw = 0.0f;
 	float roll = 0.0f;
-	float mouse_speed = 0.002f;
-	float speed = 0.02f;
+	float mouse_speed = 0.001f;
+	float speed = 0.03f;
 	Window* window;
 
 public:
@@ -27,7 +27,7 @@ public:
   float getPitch() { return pitch; }
   float getYaw() { return yaw; }
 
-	void move(float elapsed_time);
+	void update();
 };
 
 #endif
