@@ -98,6 +98,60 @@ GLuint loadBMP(const char* texturePath)
     return textureID;
 }
 
+bool loadAssImp(const char * path,
+	              vector<unsigned int> & indices,
+	              vector<GLfloat> & vertices,
+	              vector<GLfloat> & uvs,
+                vector<GLfloat> & normals)
+{
+	Assimp::Importer importer;
+
+	const aiScene* scene = importer.ReadFile(path, 0);
+	if(!scene)
+  {
+		fprintf(stderr, importer.GetErrorString());
+		return false;
+	}
+
+	const aiMesh* mesh = scene->mMeshes[0];
+
+	vertices.reserve(mesh->mNumVertices*3);
+	for(unsigned int i=0; i<mesh->mNumVertices; i++)
+  {
+		aiVector3D pos = mesh->mVertices[i];
+		vertices.push_back(pos.x);
+    vertices.push_back(pos.y);
+    vertices.push_back(pos.z);
+	}
+
+	uvs.reserve(mesh->mNumVertices*2);
+	for(unsigned int i=0; i<mesh->mNumVertices; i++)
+  {
+		aiVector3D UVW = mesh->mTextureCoords[0][i];
+		uvs.push_back(UVW.x);
+    uvs.push_back(UVW.y);
+	}
+
+	normals.reserve(mesh->mNumVertices*3);
+	for(unsigned int i=0; i<mesh->mNumVertices; i++)
+  {
+		aiVector3D n = mesh->mNormals[i];
+		normals.push_back(n.x);
+    normals.push_back(n.y);
+    normals.push_back(n.z);
+	}
+
+	indices.reserve(mesh->mNumFaces*3);
+	for (unsigned int i=0; i<mesh->mNumFaces; i++)
+  {
+		indices.push_back(mesh->mFaces[i].mIndices[0]);
+		indices.push_back(mesh->mFaces[i].mIndices[1]);
+		indices.push_back(mesh->mFaces[i].mIndices[2]);
+	}
+
+	return true;
+}
+
 string readShaderFromFile(const char* filePath)
 {
 	string shaderCode;

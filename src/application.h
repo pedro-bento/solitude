@@ -19,7 +19,6 @@ class Application
   FpsCounter fps_counter;
   StaticShader static_shader;
   Renderer renderer;
-  Entity entity;
 
 public:
   Application();
