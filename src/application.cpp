@@ -1,17 +1,26 @@
 #include "application.h"
 
 Application::Application()
-: window(1280,720, "0 FSP"),
+: window(window_width,window_height, "0 FSP"),
   camera(&window),
-  renderer(70, 1280/720, 0.1f, 100.0f, &static_shader)
+  renderer(70, window_width/window_height, 0.1f, 100.0f, &static_shader),
+  light(vec3(0.0f,250.0f,0.0f),vec3(1.0f,1.0f,1.0f))
 {
   entities.push_back(
     make_unique<Entity>
-      (loadTexturedModel("./res/stall.obj",
-                         "./res/stallTexture.bmp"),
+      (loadTexturedModel("./res/dragon.obj",
+                         "./res/white.bmp"),
            vec3(0.0f,0.0f,0.0f),
            vec3(0.0f,0.0f,0.0f),
            1.0f));
+
+   entities.push_back(
+     make_unique<Entity>
+       (loadTexturedModel("./res/stall.obj",
+                          "./res/stallTexture.bmp"),
+            vec3(30.0f,0.0f,-5.0f),
+            vec3(0.0f,90.0f,0.0f),
+            1.0f));
 }
 
 Application::~Application()
@@ -31,6 +40,7 @@ void Application::run()
 
     renderer.prepare();
     static_shader.start();
+    static_shader.loadLight(&light);
     static_shader.loadViewMatrix(&camera);
     for(auto& entity : entities)
       renderer.render(entity, &static_shader);

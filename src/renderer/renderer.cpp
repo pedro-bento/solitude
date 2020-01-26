@@ -38,6 +38,10 @@ void Renderer::render(unique_ptr<Entity>& entity, StaticShader* static_shader)
 	glBindBuffer(GL_ARRAY_BUFFER, model_texture->getTextureCoordsID());
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 
+  glEnableVertexAttribArray(2);
+	glBindBuffer(GL_ARRAY_BUFFER, model_texture->getNormalsID());
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, raw_model->getIndicesID());
 
 	mat4 transformationMatrix = createTransformationMatrix(entity->getPosition(), entity->getRotation(), entity->getScale());
@@ -48,5 +52,6 @@ void Renderer::render(unique_ptr<Entity>& entity, StaticShader* static_shader)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+  glDisableVertexAttribArray(2);
 	glBindVertexArray(0);
 }

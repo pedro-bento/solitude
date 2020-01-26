@@ -8,13 +8,15 @@ class ModelTexture
 {
 	GLuint textureID;
 	GLuint textureCoordsID;
+	GLuint normalsID;
 
 public:
-	ModelTexture(GLuint _textureID, GLuint _textureCoordsID);
+	ModelTexture(GLuint _textureID, GLuint _textureCoordsID, GLuint _normalsID);
 	~ModelTexture();
 
   GLuint getTextureID() { return textureID; }
 	GLuint getTextureCoordsID() { return textureCoordsID; }
+	GLuint getNormalsID() { return normalsID; }
 };
 
 #endif // MODEL_TEXTURE_H

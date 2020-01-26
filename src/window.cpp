@@ -25,6 +25,7 @@ Window::Window(int _width, int _height, const char* _title)
 	}
 
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(0);
 
 	glewExperimental = true;
 	GLenum error = glewInit();

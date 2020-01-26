@@ -1,7 +1,9 @@
 #include "model_texture.h"
 
-ModelTexture::ModelTexture(GLuint _textureID, GLuint _textureCoordsID)
-: textureID(_textureID), textureCoordsID(_textureCoordsID)
+ModelTexture::ModelTexture(GLuint _textureID, GLuint _textureCoordsID, GLuint _normalsID)
+: textureID(_textureID),
+	textureCoordsID(_textureCoordsID),
+	normalsID(_normalsID)
 {
 }
 
