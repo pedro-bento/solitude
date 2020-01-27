@@ -34,6 +34,7 @@ public:
 	void loadViewMatrix(Camera* camera);
 	void loadLight(Light* light);
 	void loadShineVariables(float damper, float reflectivity);
+
 };
 
 #endif // STATIC_SHADER_H

@@ -19,6 +19,7 @@ public:
   GLuint getTextureID() { return textureID; }
 	GLuint getTextureCoordsID() { return textureCoordsID; }
 	GLuint getNormalsID() { return normalsID; }
+  
 	float getShineDamper() { return shineDamper; }
 	float getReflectivity() { return reflectivity; }
 

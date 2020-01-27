@@ -55,3 +55,4 @@ void StaticShader::loadShineVariables(float damper, float reflectivity)
 	Shader::loadFloat(location_shineDamper, damper);
 	Shader::loadFloat(location_reflectivity, reflectivity);
 }
+
