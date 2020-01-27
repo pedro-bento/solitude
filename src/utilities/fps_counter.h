@@ -8,13 +8,13 @@
 class FpsCounter
 {
   int frames;
-  float last_time;
+  float acc_time;
 
 public:
   FpsCounter();
   ~FpsCounter();
 
-  void update(Window* window);
+  void update(Window* window, float elapsed_time);
 };
 
 #endif // FPS_CONUTER_H

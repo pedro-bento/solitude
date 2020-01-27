@@ -23,11 +23,12 @@ shared_ptr<RawModel> loadRawModel(vector<GLfloat> vertices, vector<unsigned int>
         (GLsizei)indices.size());
 }
 
-shared_ptr<ModelTexture> loadModelTexture(vector<GLfloat> textureCoords, const char* texturePath)
+shared_ptr<ModelTexture> loadModelTexture(vector<GLfloat> uvs, vector<GLfloat> normals, const char* texturePath)
 {
     return make_shared<ModelTexture>(
       loadBMP(texturePath),
-      bindDataBuffer(textureCoords));
+      bindDataBuffer(uvs),
+      bindDataBuffer(normals));
 }
 
 shared_ptr<TexturedModel> loadTexturedModel(const char* objPath, const char* texturePath)
@@ -41,7 +42,7 @@ shared_ptr<TexturedModel> loadTexturedModel(const char* objPath, const char* tex
 
   return make_shared<TexturedModel>(
     loadRawModel(vertices, indices),
-    loadModelTexture(uvs, texturePath));
+    loadModelTexture(uvs, normals, texturePath));
 }
 
 GLuint loadBMP(const char* texturePath)
@@ -109,6 +110,8 @@ GLuint loadBMP(const char* texturePath)
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     return textureID;
