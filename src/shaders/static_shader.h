@@ -19,6 +19,8 @@ class StaticShader : public Shader
 	GLuint location_viewMatrix;
 	GLuint location_lightPosition;
 	GLuint location_lightColour;
+	GLuint location_shineDamper;
+	GLuint location_reflectivity;
 
 public:
 	StaticShader();
@@ -31,6 +33,8 @@ public:
 	void loadProjectionMatrix(mat4 matrix);
 	void loadViewMatrix(Camera* camera);
 	void loadLight(Light* light);
+	void loadShineVariables(float damper, float reflectivity);
+
 };
 
 #endif // STATIC_SHADER_H

@@ -27,6 +27,10 @@ void Renderer::render(unique_ptr<Entity>& entity, StaticShader* static_shader)
 
 	glBindVertexArray(raw_model->getVaoID());
 
+  static_shader->loadShineVariables(
+    model_texture->getShineDamper(),
+    model_texture->getReflectivity());
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model_texture->getTextureID());
 

@@ -13,6 +13,8 @@ using namespace std;
 #include "./utilities/fps_counter.h"
 #include "./renderer/renderer.h"
 #include "./shaders/static_shader.h"
+#include "./models/textured_model.h"
+#include "./textures/model_texture.h"
 #include "./entities/entity.h"
 #include "./entities/light.h"
 
