@@ -16,7 +16,7 @@ class MasterRenderer
 {
   StaticShader static_shader;
   Renderer renderer;
-  unordered_map<shared_ptrTexturedModel>, vector<Entity*>> entities;
+  unordered_map<shared_ptr<TexturedModel>, vector<Entity*>> entities;
 
 public:
   MasterRenderer(float aspectRatio);
