@@ -1,26 +1,20 @@
-#include "renderer.h"
+#include "entity_renderer.h"
 
-Renderer::Renderer(StaticShader* _static_shader, float fov,
-  float aspectRatio, float nearPlane, float farPlane)
+EntityRenderer::EntityRenderer(
+  StaticShader* _static_shader,
+  mat4 projectionMatrix)
 : static_shader(_static_shader)
 {
-  projectionMatrix = perspective(radians(fov), aspectRatio, nearPlane, farPlane);
   static_shader->start();
   static_shader->loadProjectionMatrix(projectionMatrix);
   static_shader->stop();
 }
 
-Renderer::~Renderer()
+EntityRenderer::~EntityRenderer()
 {
 }
 
-void Renderer::prepare()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.53f, 0.81f, 0.98f, 1.0f);
-}
-
-void Renderer::render(
+void EntityRenderer::render(
   unordered_map<shared_ptr<TexturedModel>,
                 vector<Entity*>> entities)
 {
@@ -45,7 +39,7 @@ void Renderer::render(
   }
 }
 
-void Renderer::prepareTexturedModel(
+void EntityRenderer::prepareTexturedModel(
   shared_ptr<TexturedModel> textured_model)
 {
 	glBindVertexArray(textured_model->getRawModel()->getVaoID());
@@ -77,7 +71,7 @@ void Renderer::prepareTexturedModel(
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 }
 
-void Renderer::unbindTexturedModel()
+void EntityRenderer::unbindTexturedModel()
 {
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableVertexAttribArray(0);
@@ -86,7 +80,7 @@ void Renderer::unbindTexturedModel()
 	glBindVertexArray(0);
 }
 
-void Renderer::prepareInstance(Entity* entity)
+void EntityRenderer::prepareInstance(Entity* entity)
 {
   mat4 transformationMatrix = createTransformationMatrix(entity->getPosition(), entity->getRotation(), entity->getScale());
 	static_shader->loadTransformationMatrix(transformationMatrix);

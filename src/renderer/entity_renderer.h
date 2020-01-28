@@ -21,16 +21,14 @@ using namespace std;
 #include "../utilities/maths.h"
 #include "../shaders/static_shader.h"
 
-class Renderer
+class EntityRenderer
 {
-  mat4 projectionMatrix;
   StaticShader* static_shader;
 
 public:
-  Renderer(StaticShader* _static_shader, float fov, float aspectRatio, float nearPlane, float farPlane);
-  ~Renderer();
+  EntityRenderer(StaticShader* _static_shader, mat4 projectionMatrix);
+  ~EntityRenderer();
 
-  void prepare();
   void render(unordered_map<shared_ptr<TexturedModel>,
                 vector<Entity*>> entities);
 

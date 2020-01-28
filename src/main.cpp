@@ -10,7 +10,6 @@ using namespace std;
 #include "window.h"
 #include "./entities/camera.h"
 #include "./utilities/fps_counter.h"
-#include "./renderer/renderer.h"
 #include "./shaders/static_shader.h"
 #include "./models/textured_model.h"
 #include "./textures/model_texture.h"
@@ -61,31 +60,16 @@ int main(void)
    t0->getModelTexture()->setShineDamper(10.0f);
    t0->getModelTexture()->setReflectivity(1.0f);
 
-  entities.push_back(make_unique<Entity>(
-      t0,
-      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
-      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
-      1.0f));
-  entities.push_back(make_unique<Entity>(
-      t0,
-      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
-      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
-      1.0f));
-  entities.push_back(make_unique<Entity>(
-      t0,
-      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
-      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
-      1.0f));
-  entities.push_back(make_unique<Entity>(
-      t0,
-      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
-      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
-      1.0f));
+   entities.push_back(make_unique<Entity>(
+     t0,
+     vec3(0.0f,0.0f,0.0f),
+     vec3(0.0f,0.0f,0.0f),
+     1.0f));
+
+  MasterRenderer master_renderer(window_width/window_height);
 
   float current_time, elapsed_time;
   float last_time = glfwGetTime();
-
-  MasterRenderer master_renderer(window_width/window_height);
 
   while(!glfwWindowShouldClose(window.getWindow()))
   {

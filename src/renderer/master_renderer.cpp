@@ -1,7 +1,8 @@
 #include "master_renderer.h"
 
 MasterRenderer::MasterRenderer(float aspectRatio)
-: renderer(&static_shader, 70, aspectRatio, 0.1f, 100.0f)
+: projectionMatrix(perspective(radians(70.0f), aspectRatio, 0.1f, 100.0f)),
+	entity_renderer(&static_shader, projectionMatrix)
 {
 }
 
@@ -9,13 +10,19 @@ MasterRenderer::~MasterRenderer()
 {
 }
 
+void MasterRenderer::prepare()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.53f, 0.81f, 0.98f, 1.0f);
+}
+
 void MasterRenderer::render(Light* sun, Camera* camera)
 {
-  renderer.prepare();
+  prepare();
   static_shader.start();
   static_shader.loadLight(sun),
   static_shader.loadViewMatrix(camera);
-  renderer.render(entities);
+  entity_renderer.render(entities);
   static_shader.stop();
   entities.clear();
 }
