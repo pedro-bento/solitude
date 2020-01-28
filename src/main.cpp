@@ -18,8 +18,15 @@ using namespace std;
 #include "./entities/light.h"
 #include "./renderer/master_renderer.h"
 
+#include <cstdlib>
+
 const int window_width = 1280;
 const int window_height = 720;
+
+float randFloat(float min, float max)
+{
+  return rand() % (int)(max + 1 - min) + min;
+}
 
 int main(void)
 {
@@ -32,20 +39,6 @@ int main(void)
   StaticShader static_shader;
   vector<unique_ptr<Entity>> entities;
   Light light(vec3(0.0f,500.0f,0.0f), vec3(1.0f,1.0f,1.0f));
-
-  shared_ptr<TexturedModel> t0 = loadTexturedModel(
-    "./res/dragon.obj",
-    "./res/white.bmp");
-
-  t0->getModelTexture()->setShineDamper(10.0f);
-  t0->getModelTexture()->setReflectivity(1.0f);
-
-  entities.push_back(
-    make_unique<Entity>(
-      t0,
-      vec3(0.0f,0.0f,0.0f),
-      vec3(0.0f,0.0f,0.0f),
-      1.0f));
 
   shared_ptr<TexturedModel> t = loadTexturedModel(
     "./res/stall.obj",
@@ -60,6 +53,34 @@ int main(void)
        vec3(30.0f,0.0f,-5.0f),
        vec3(0.0f,90.0f,0.0f),
        1.0f));
+
+   shared_ptr<TexturedModel> t0 = loadTexturedModel(
+     "./res/dragon.obj",
+     "./res/white.bmp");
+
+   t0->getModelTexture()->setShineDamper(10.0f);
+   t0->getModelTexture()->setReflectivity(1.0f);
+
+  entities.push_back(make_unique<Entity>(
+      t0,
+      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
+      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
+      1.0f));
+  entities.push_back(make_unique<Entity>(
+      t0,
+      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
+      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
+      1.0f));
+  entities.push_back(make_unique<Entity>(
+      t0,
+      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
+      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
+      1.0f));
+  entities.push_back(make_unique<Entity>(
+      t0,
+      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
+      vec3(randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f),randFloat(-50.0f,50.0f)),
+      1.0f));
 
   float current_time, elapsed_time;
   float last_time = glfwGetTime();

@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include <memory>
+#include <iostream>
 using namespace std;
 #include "../models/textured_model.h"
 #include "../entities/entity.h"
