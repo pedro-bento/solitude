@@ -7,19 +7,15 @@
 class ModelTexture
 {
 	GLuint textureID;
-	GLuint textureCoordsID;
-	GLuint normalsID;
 	float shineDamper = 1.0f;
 	float reflectivity = 0.0f;
 
 public:
-	ModelTexture(GLuint _textureID, GLuint _textureCoordsID, GLuint _normalsID);
+	ModelTexture(GLuint _textureID);
 	~ModelTexture();
 
   GLuint getTextureID() { return textureID; }
-	GLuint getTextureCoordsID() { return textureCoordsID; }
-	GLuint getNormalsID() { return normalsID; }
-  
+
 	float getShineDamper() { return shineDamper; }
 	float getReflectivity() { return reflectivity; }
 

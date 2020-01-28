@@ -8,6 +8,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
+#include <unordered_map>
+#include <vector>
 #include <memory>
 using namespace std;
 
@@ -17,18 +19,25 @@ using namespace std;
 #include "../entities/entity.h"
 #include "../shaders/static_shader.h"
 #include "../utilities/maths.h"
+#include "../shaders/static_shader.h"
 
 class Renderer
 {
   mat4 projectionMatrix;
+  StaticShader* static_shader;
 
 public:
-  Renderer(float _fov, float _aspectRatio, float _nearPlane,
-           float _farPlane, StaticShader* shader);
+  Renderer(StaticShader* _static_shader, float fov, float aspectRatio, float nearPlane, float farPlane);
   ~Renderer();
 
   void prepare();
-  void render(unique_ptr<Entity>& entity, StaticShader* static_shader);
+  void render(unordered_map<shared_ptr<TexturedModel>,
+                vector<Entity*>> entities);
+
+private:
+  void prepareTexturedModel(shared_ptr<TexturedModel> textured_model);
+  void unbindTexturedModel();
+  void prepareInstance(Entity* entity);
 };
 
 #endif // RENDERER_H

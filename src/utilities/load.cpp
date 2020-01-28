@@ -14,21 +14,22 @@ GLuint loadShader(const char* shaderPath, GLenum shader)
 	return shaderID;
 }
 
-shared_ptr<RawModel> loadRawModel(vector<GLfloat> vertices, vector<unsigned int> indices)
+shared_ptr<RawModel> loadRawModel(
+  vector<GLfloat> vertices, vector<unsigned int> indices,
+  vector<GLfloat> uvs, vector<GLfloat> normals)
 {
     return make_shared<RawModel>(
         createVAO(),
         bindDataBuffer(vertices),
         bindIndicesBuffer(indices),
+        bindDataBuffer(uvs),
+        bindDataBuffer(normals),
         (GLsizei)indices.size());
 }
 
-shared_ptr<ModelTexture> loadModelTexture(vector<GLfloat> uvs, vector<GLfloat> normals, const char* texturePath)
+shared_ptr<ModelTexture> loadModelTexture(const char* texturePath)
 {
-    return make_shared<ModelTexture>(
-      loadBMP(texturePath),
-      bindDataBuffer(uvs),
-      bindDataBuffer(normals));
+    return make_shared<ModelTexture>(loadBMP(texturePath));
 }
 
 shared_ptr<TexturedModel> loadTexturedModel(const char* objPath, const char* texturePath)
@@ -41,8 +42,8 @@ shared_ptr<TexturedModel> loadTexturedModel(const char* objPath, const char* tex
     fprintf(stderr, "Cloud not load: %s\n", objPath);
 
   return make_shared<TexturedModel>(
-    loadRawModel(vertices, indices),
-    loadModelTexture(uvs, normals, texturePath));
+    loadRawModel(vertices, indices, uvs, normals),
+    loadModelTexture(texturePath));
 }
 
 GLuint loadBMP(const char* texturePath)

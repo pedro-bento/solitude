@@ -1,6 +1,6 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
-
+/*
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -40,5 +40,5 @@ public:
 private:
   void handleEvents();
 };
-
+*/
 #endif // APPLICATION_H

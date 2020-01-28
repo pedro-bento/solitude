@@ -21,8 +21,8 @@ using namespace std;
 #include "../models/textured_model.h"
 
 GLuint loadShader(const char* shaderPath, GLenum shader);
-shared_ptr<RawModel> loadRawModel(vector<GLfloat> vertices, vector<unsigned int> indices);
-shared_ptr<ModelTexture> loadModelTexture(vector<GLfloat> uvs, vector<GLfloat> normals, const char* texturePath);
+shared_ptr<RawModel> loadRawModel(vector<GLfloat> vertices, vector<unsigned int> indices, vector<GLfloat> uvs, vector<GLfloat> normals);
+shared_ptr<ModelTexture> loadModelTexture(const char* texturePath);
 shared_ptr<TexturedModel> loadTexturedModel(const char* objPath, const char* texturePath);
 GLuint loadBMP(const char* texturePath);
 bool loadAssImp(const char * path, vector<unsigned int> & indices, vector<GLfloat> & vertices, vector<GLfloat> & uvs, vector<GLfloat> & normals);

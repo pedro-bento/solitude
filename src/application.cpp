@@ -1,5 +1,5 @@
 #include "application.h"
-
+/*
 Application::Application()
 : window(window_width,window_height, "SOLITUDE: 0 FSP"),
   camera(&window),
@@ -78,3 +78,4 @@ void Application::handleEvents()
      glfwSetWindowShouldClose(window.getWindow(), GLFW_TRUE);
   }
 }
+*/
