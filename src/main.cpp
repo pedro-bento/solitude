@@ -17,6 +17,8 @@ using namespace std;
 #include "./entities/light.h"
 #include "./renderer/master_renderer.h"
 
+#include "./terrain/terrain.h"
+
 #include <cstdlib>
 
 const int window_width = 1280;
@@ -24,8 +26,11 @@ const int window_height = 720;
 
 float randFloat(float min, float max)
 {
-  return rand() % (int)(max + 1 - min) + min;
+  float f = (float)rand() / RAND_MAX;
+  return min + f * (max - min);
 }
+
+// TODO: MasterRenderer should store value of TextureModel
 
 int main(void)
 {
@@ -36,40 +41,39 @@ int main(void)
   Camera camera(&window);
   FpsCounter fps_counter;
   StaticShader static_shader;
-  vector<unique_ptr<Entity>> entities;
+
   Light light(vec3(0.0f,500.0f,0.0f), vec3(1.0f,1.0f,1.0f));
 
-  shared_ptr<TexturedModel> t = loadTexturedModel(
-    "./res/stall.obj",
-    "./res/stallTexture.bmp");
+  int num_trees = 1000;
 
-  t->getModelTexture()->setShineDamper(10.0f);
-  t->getModelTexture()->setReflectivity(1.0f);
+  vector<Entity*> entities;
+  entities.resize(num_trees);
 
-   entities.push_back(
-     make_unique<Entity>(
-       t,
-       vec3(30.0f,0.0f,-5.0f),
-       vec3(0.0f,90.0f,0.0f),
-       1.0f));
+  entities[0] = new Entity(
+    loadTexturedModel("./res/tree.obj","./res/tree.bmp"),
+    vec3(0.0f,0.0f,10.0f),vec3(0.0f,0.0f,0.0f),1.0f);
 
-   shared_ptr<TexturedModel> t0 = loadTexturedModel(
-     "./res/dragon.obj",
-     "./res/white.bmp");
+  for(int i = 0; i < num_trees; i++)
+  {
+    entities[i] = new Entity(entities[0]->getTexturedModel(),
+      vec3(
+        randFloat(-100.0f,100.0f),
+        0.0f,
+        randFloat(-100.0f,100.0f)),
+      vec3(0.0f,0.0f,0.0f), 1.0f);
+  }
 
-   t0->getModelTexture()->setShineDamper(10.0f);
-   t0->getModelTexture()->setReflectivity(1.0f);
-
-   entities.push_back(make_unique<Entity>(
-     t0,
-     vec3(0.0f,0.0f,0.0f),
-     vec3(0.0f,0.0f,0.0f),
-     1.0f));
+  Terrain terrain1(0,0,loadModelTexture("./res/grass.bmp"));
+  Terrain terrain2(-1,0,terrain1.getModelTexture());
+  Terrain terrain3(0,-1,terrain1.getModelTexture());
+  Terrain terrain4(-1,-1,terrain1.getModelTexture());
 
   MasterRenderer master_renderer(window_width/window_height);
 
   float current_time, elapsed_time;
   float last_time = glfwGetTime();
+
+  cout << entities.size() << endl;
 
   while(!glfwWindowShouldClose(window.getWindow()))
   {
@@ -80,15 +84,15 @@ int main(void)
    fps_counter.update(&window, elapsed_time);
    camera.update(elapsed_time);
 
-   for(auto& entity : entities)
+   for(auto entity : entities)
    {
-     entity->rotate(elapsed_time * vec3(0.0f,15.0f,0.0f));
+     master_renderer.processEntity(entity);
    }
 
-   for(size_t i = 0; i < entities.size(); i++)
-   {
-     master_renderer.processEntity(entities[i].get());
-   }
+   master_renderer.processTerrain(&terrain1);
+   master_renderer.processTerrain(&terrain2);
+   master_renderer.processTerrain(&terrain3);
+   master_renderer.processTerrain(&terrain4);
 
    master_renderer.render(&light, &camera);
 

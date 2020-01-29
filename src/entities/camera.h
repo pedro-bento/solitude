@@ -14,7 +14,7 @@ using namespace std;
 
 class Camera
 {
-	vec3 position = vec3(0.0f,0.0f,0.0f);;
+	vec3 position = vec3(0.0f,5.0f,0.0f);;
 	float pitch = 0.0f;
 	float yaw = 0.0f;
 	float roll = 0.0f;

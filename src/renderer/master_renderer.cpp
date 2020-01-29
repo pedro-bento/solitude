@@ -2,7 +2,8 @@
 
 MasterRenderer::MasterRenderer(float aspectRatio)
 : projectionMatrix(perspective(radians(70.0f), aspectRatio, 0.1f, 100.0f)),
-	entity_renderer(&static_shader, projectionMatrix)
+	entity_renderer(&static_shader, projectionMatrix),
+	terrain_renderer(&terrain_shader, projectionMatrix)
 {
 }
 
@@ -19,11 +20,20 @@ void MasterRenderer::prepare()
 void MasterRenderer::render(Light* sun, Camera* camera)
 {
   prepare();
+
   static_shader.start();
   static_shader.loadLight(sun),
   static_shader.loadViewMatrix(camera);
   entity_renderer.render(entities);
   static_shader.stop();
+
+	terrain_shader.start();
+	terrain_shader.loadLight(sun),
+  terrain_shader.loadViewMatrix(camera);
+	terrain_renderer.render(terrains);
+	terrain_shader.stop();
+
+	terrains.clear();
   entities.clear();
 }
 
@@ -40,4 +50,9 @@ void MasterRenderer::processEntity(Entity* entity)
     vector<Entity*> batch = {entity};
     entities.insert({entityModel, batch});
   }
+}
+
+void MasterRenderer::processTerrain(Terrain* terrain)
+{
+	terrains.push_back(terrain);
 }

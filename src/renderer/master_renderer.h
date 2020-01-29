@@ -17,14 +17,20 @@ using namespace glm;
 #include "../entities/entity.h"
 #include "../entities/light.h"
 #include "../entities/camera.h"
-
+#include "terrain_renderer.h"
+#include "../shaders/terrain_shader.h"
+#include "../terrain/terrain.h"
 
 class MasterRenderer
 {
   mat4 projectionMatrix;
   StaticShader static_shader;
   EntityRenderer entity_renderer;
+  TerrainShader terrain_shader;
+  TerrainRenderer terrain_renderer;
+
   unordered_map<shared_ptr<TexturedModel>, vector<Entity*>> entities;
+  vector<Terrain*> terrains;
 
 public:
   MasterRenderer(float aspectRatio);
@@ -33,6 +39,7 @@ public:
   void prepare();
   void render(Light* sun, Camera* camera);
   void processEntity(Entity* entity);
+  void processTerrain(Terrain* terrain);
 };
 
 #endif
