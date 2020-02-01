@@ -1,4 +1,5 @@
 #include "entity_renderer.h"
+#include "master_renderer.h"
 
 EntityRenderer::EntityRenderer(
   StaticShader* _static_shader,
@@ -42,6 +43,11 @@ void EntityRenderer::render(
 void EntityRenderer::prepareTexturedModel(
   shared_ptr<TexturedModel> textured_model)
 {
+  if(textured_model->getModelTexture()->getHasTransparency())
+  {
+    MasterRenderer::disableCulling();
+  }
+
 	glBindVertexArray(textured_model->getRawModel()->getVaoID());
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,
@@ -73,6 +79,7 @@ void EntityRenderer::prepareTexturedModel(
 
 void EntityRenderer::unbindTexturedModel()
 {
+  MasterRenderer::enableCulling();
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

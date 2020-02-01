@@ -36,6 +36,17 @@ public:
   MasterRenderer(float aspectRatio);
   ~MasterRenderer();
 
+  static void enableCulling()
+  {
+    glEnable(GL_CULL_FACE);
+  	glCullFace(GL_BACK);
+  }
+
+  static void disableCulling()
+  {
+    glDisable(GL_CULL_FACE);
+  }
+
   void prepare();
   void render(Light* sun, Camera* camera);
   void processEntity(Entity* entity);

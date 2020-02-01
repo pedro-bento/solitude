@@ -5,6 +5,7 @@ MasterRenderer::MasterRenderer(float aspectRatio)
 	entity_renderer(&static_shader, projectionMatrix),
 	terrain_renderer(&terrain_shader, projectionMatrix)
 {
+	enableCulling();
 }
 
 MasterRenderer::~MasterRenderer()

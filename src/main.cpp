@@ -30,7 +30,58 @@ float randFloat(float min, float max)
   return min + f * (max - min);
 }
 
-// TODO: MasterRenderer should store value of TextureModel
+void populate(vector<unique_ptr<Entity>>& entities,
+  int num_trees, int num_fern, int num_grass)
+{
+  shared_ptr<TexturedModel> tree = loadTexturedModel(
+    "./res/tree.obj",
+    "./res/tree.dds");
+
+  shared_ptr<TexturedModel> fern = loadTexturedModel(
+    "./res/fern.obj",
+    "./res/fern.dds");
+
+  shared_ptr<TexturedModel> grass = loadTexturedModel(
+    "./res/grassModel.obj",
+    "./res/grassTexture.dds");
+  grass->getModelTexture()->setHasTransparency(true);
+
+  for(int i = 0; i < num_trees; i++)
+  {
+    entities.push_back(
+      make_unique<Entity>(
+        tree,
+        vec3(
+          randFloat(-100.0f,100.0f),
+          0.0f,
+          randFloat(-100.0f,100.0f)),
+        vec3(0.0f,0.0f,0.0f), 1.0f));
+  }
+
+  for(int i = 0; i < num_fern; i++)
+  {
+    entities.push_back(
+      make_unique<Entity>(
+        fern,
+        vec3(
+          randFloat(-100.0f,100.0f),
+          0.0f,
+          randFloat(-100.0f,100.0f)),
+        vec3(0.0f,0.0f,0.0f), 0.15f));
+  }
+
+  for(int i = 0; i < num_grass; i++)
+  {
+    entities.push_back(
+      make_unique<Entity>(
+        grass,
+        vec3(
+          randFloat(-100.0f,100.0f),
+          0.5f,
+          randFloat(-100.0f,100.0f)),
+        vec3(180.0f,0.0f,0.0f), 0.5f));
+  }
+}
 
 int main(void)
 {
@@ -42,28 +93,15 @@ int main(void)
   FpsCounter fps_counter;
   StaticShader static_shader;
 
-  Light light(vec3(0.0f,500.0f,0.0f), vec3(1.0f,1.0f,1.0f));
+  Light light(vec3(0.0f,100.0f,50.0f), vec3(1.0f,1.0f,1.0f));
 
-  int num_trees = 1000;
+  int num_trees = 400;
+  int num_fern = 400;
+  int num_grass = 300;
+  vector<unique_ptr<Entity>> entities;
+  populate(entities, num_trees, num_fern, num_grass);
 
-  vector<Entity*> entities;
-  entities.resize(num_trees);
-
-  entities[0] = new Entity(
-    loadTexturedModel("./res/tree.obj","./res/tree.bmp"),
-    vec3(0.0f,0.0f,10.0f),vec3(0.0f,0.0f,0.0f),1.0f);
-
-  for(int i = 0; i < num_trees; i++)
-  {
-    entities[i] = new Entity(entities[0]->getTexturedModel(),
-      vec3(
-        randFloat(-100.0f,100.0f),
-        0.0f,
-        randFloat(-100.0f,100.0f)),
-      vec3(0.0f,0.0f,0.0f), 1.0f);
-  }
-
-  Terrain terrain1(0,0,loadModelTexture("./res/grass.bmp"));
+  Terrain terrain1(0,0,loadModelTexture("./res/grass.dds"));
   Terrain terrain2(-1,0,terrain1.getModelTexture());
   Terrain terrain3(0,-1,terrain1.getModelTexture());
   Terrain terrain4(-1,-1,terrain1.getModelTexture());
@@ -73,7 +111,8 @@ int main(void)
   float current_time, elapsed_time;
   float last_time = glfwGetTime();
 
-  cout << entities.size() << endl;
+  glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   while(!glfwWindowShouldClose(window.getWindow()))
   {
@@ -84,9 +123,9 @@ int main(void)
    fps_counter.update(&window, elapsed_time);
    camera.update(elapsed_time);
 
-   for(auto entity : entities)
+   for(auto& entity : entities)
    {
-     master_renderer.processEntity(entity);
+     master_renderer.processEntity(entity.get());
    }
 
    master_renderer.processTerrain(&terrain1);
