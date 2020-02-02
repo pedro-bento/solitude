@@ -10,6 +10,7 @@ class ModelTexture
 	float shineDamper = 1.0f;
 	float reflectivity = 0.0f;
 	bool hasTransparency = false;
+	bool useFakeLighting = false;
 
 public:
 	ModelTexture(GLuint _textureID);
@@ -20,10 +21,12 @@ public:
 	float getShineDamper() { return shineDamper; }
 	float getReflectivity() { return reflectivity; }
 	bool getHasTransparency() { return hasTransparency; }
+	bool getUseFakeLighting() { return useFakeLighting; }
 
 	void setShineDamper(float v) { shineDamper = v; }
 	void setReflectivity(float v) { reflectivity = v; }
 	void setHasTransparency(bool v) { hasTransparency = v; }
+	void setUseFakeLighting(bool v) { useFakeLighting = v; }
 };
 
 #endif // MODEL_TEXTURE_H

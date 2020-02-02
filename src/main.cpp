@@ -33,54 +33,18 @@ float randFloat(float min, float max)
 void populate(vector<unique_ptr<Entity>>& entities,
   int num_trees, int num_fern, int num_grass)
 {
-  shared_ptr<TexturedModel> tree = loadTexturedModel(
-    "./res/tree.obj",
-    "./res/tree.dds");
-
-  shared_ptr<TexturedModel> fern = loadTexturedModel(
-    "./res/fern.obj",
-    "./res/fern.dds");
-
-  shared_ptr<TexturedModel> grass = loadTexturedModel(
-    "./res/grassModel.obj",
-    "./res/grassTexture.dds");
+  shared_ptr<TexturedModel> tree = loadTexturedModel("./res/tree.obj","./res/tree.dds");
+  shared_ptr<TexturedModel> fern = loadTexturedModel("./res/fern.obj","./res/fern.dds");
+  shared_ptr<TexturedModel> grass = loadTexturedModel("./res/grassModel.obj","./res/grassTexture.dds");
   grass->getModelTexture()->setHasTransparency(true);
+  grass->getModelTexture()->setUseFakeLighting(true);
 
   for(int i = 0; i < num_trees; i++)
-  {
-    entities.push_back(
-      make_unique<Entity>(
-        tree,
-        vec3(
-          randFloat(-100.0f,100.0f),
-          0.0f,
-          randFloat(-100.0f,100.0f)),
-        vec3(0.0f,0.0f,0.0f), 1.0f));
-  }
-
+    entities.push_back(make_unique<Entity>(tree,vec3(randFloat(-50.0f,50.0f),0.0f,randFloat(-50.0f,50.0f)),vec3(0.0f,0.0f,0.0f), 1.0f));
   for(int i = 0; i < num_fern; i++)
-  {
-    entities.push_back(
-      make_unique<Entity>(
-        fern,
-        vec3(
-          randFloat(-100.0f,100.0f),
-          0.0f,
-          randFloat(-100.0f,100.0f)),
-        vec3(0.0f,0.0f,0.0f), 0.15f));
-  }
-
+    entities.push_back(make_unique<Entity>(fern,vec3(randFloat(-50.0f,50.0f),0.0f,randFloat(-50.0f,50.0f)),vec3(0.0f,0.0f,0.0f), 0.15f));
   for(int i = 0; i < num_grass; i++)
-  {
-    entities.push_back(
-      make_unique<Entity>(
-        grass,
-        vec3(
-          randFloat(-100.0f,100.0f),
-          0.5f,
-          randFloat(-100.0f,100.0f)),
-        vec3(180.0f,0.0f,0.0f), 0.5f));
-  }
+    entities.push_back(make_unique<Entity>(grass,vec3(randFloat(-50.0f,50.0f),0.6f,randFloat(-50.0f,50.0f)),vec3(180.0f,0.0f,0.0f), 0.5f));
 }
 
 int main(void)
@@ -93,11 +57,11 @@ int main(void)
   FpsCounter fps_counter;
   StaticShader static_shader;
 
-  Light light(vec3(0.0f,100.0f,50.0f), vec3(1.0f,1.0f,1.0f));
+  Light light(vec3(0.0f,200.0f,50.0f), vec3(1.0f,1.0f,1.0f));
 
-  int num_trees = 400;
-  int num_fern = 400;
-  int num_grass = 300;
+  int num_trees = 100;
+  int num_fern = 200;
+  int num_grass = 100;
   vector<unique_ptr<Entity>> entities;
   populate(entities, num_trees, num_fern, num_grass);
 

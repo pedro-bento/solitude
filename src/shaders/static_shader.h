@@ -21,6 +21,7 @@ class StaticShader : public Shader
 	GLuint location_lightColour;
 	GLuint location_shineDamper;
 	GLuint location_reflectivity;
+	GLuint location_useFakeLighting;
 
 public:
 	StaticShader();
@@ -34,6 +35,7 @@ public:
 	void loadViewMatrix(Camera* camera);
 	void loadLight(Light* light);
 	void loadShineVariables(float damper, float reflectivity);
+	void loadFakeLightingVariable(bool useFake);
 
 };
 

@@ -48,6 +48,9 @@ void EntityRenderer::prepareTexturedModel(
     MasterRenderer::disableCulling();
   }
 
+  static_shader->loadFakeLightingVariable(
+    textured_model->getModelTexture()->getUseFakeLighting());
+
 	glBindVertexArray(textured_model->getRawModel()->getVaoID());
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,
