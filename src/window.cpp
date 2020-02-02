@@ -37,9 +37,6 @@ Window::Window(int _width, int _height, const char* _title)
 
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
 }
 
 Window::~Window()

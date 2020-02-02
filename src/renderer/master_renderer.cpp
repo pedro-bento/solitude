@@ -1,7 +1,8 @@
 #include "master_renderer.h"
 
 MasterRenderer::MasterRenderer(float aspectRatio)
-: projectionMatrix(perspective(radians(70.0f), aspectRatio, 0.1f, 100.0f)),
+: skyColour(0.53f, 0.81f, 0.98f),
+	projectionMatrix(perspective(radians(70.0f), aspectRatio, 0.1f, 200.0f)),
 	entity_renderer(&static_shader, projectionMatrix),
 	terrain_renderer(&terrain_shader, projectionMatrix)
 {
@@ -14,8 +15,10 @@ MasterRenderer::~MasterRenderer()
 
 void MasterRenderer::prepare()
 {
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.53f, 0.81f, 0.98f, 1.0f);
+	glClearColor(skyColour.x, skyColour.y, skyColour.z, 1.0f);
 }
 
 void MasterRenderer::render(Light* sun, Camera* camera)
@@ -23,12 +26,14 @@ void MasterRenderer::render(Light* sun, Camera* camera)
   prepare();
 
   static_shader.start();
+	static_shader.loadSkyColour(skyColour);
   static_shader.loadLight(sun),
   static_shader.loadViewMatrix(camera);
   entity_renderer.render(entities);
   static_shader.stop();
 
 	terrain_shader.start();
+	terrain_shader.loadSkyColour(skyColour);
 	terrain_shader.loadLight(sun),
   terrain_shader.loadViewMatrix(camera);
 	terrain_renderer.render(terrains);

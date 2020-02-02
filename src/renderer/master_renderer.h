@@ -23,6 +23,7 @@ using namespace glm;
 
 class MasterRenderer
 {
+  vec3 skyColour;
   mat4 projectionMatrix;
   StaticShader static_shader;
   EntityRenderer entity_renderer;

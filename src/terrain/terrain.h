@@ -10,7 +10,7 @@ using namespace std;
 
 class Terrain
 {
-  const float SIZE = 128;
+  const float SIZE = 800;
   const int VERTEX_COUNT = 128;
 
   float x;
