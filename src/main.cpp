@@ -19,8 +19,10 @@ using namespace std;
 #include "./entities/light.h"
 #include "./renderer/master_renderer.h"
 #include "./terrain/terrain.h"
+#include "./entities/player.h"
 
 #include <cstdlib>
+#include <time.h>
 
 float randFloat(float min, float max)
 {
@@ -45,23 +47,33 @@ void populate(vector<unique_ptr<Entity>>& entities,
   for(int i = 0; i < num_fern; i++)
     entities.push_back(make_unique<Entity>(fern,vec3(randFloat(20.0f,780.0f),0.0f,randFloat(20.0f,780.0f)),vec3(0.0f,0.0f,0.0f), 0.5f));
   for(int i = 0; i < num_grass; i++)
-    entities.push_back(make_unique<Entity>(grass,vec3(randFloat(20.0f,780.0f),1.2f,randFloat(20.0f,780.0f)),vec3(180.0f,0.0f,0.0f), 1.0f));
+    entities.push_back(make_unique<Entity>(grass,vec3(randFloat(20.0f,780.0f),0.0f,randFloat(20.0f,780.0f)),vec3(0.0f,0.0f,0.0f), 1.0f));
 }
 
 int main(void)
 {
   const int window_width = 1280;
   const int window_height = 720;
+  srand(time(NULL));
 
   //Application app;
   //app.run();
 
   Window window(window_width,window_height, "SOLITUDE: 0 FSP");
+
   Camera camera(&window);
+
   FpsCounter fps_counter;
+
+  shared_ptr<TexturedModel> jornal =
+    loadTexturedModel("./res/player.obj","./res/texture.dds");
+  Player player(jornal, vec3(5.0f,5.0f,5.0f), vec3(0.0f,0.0f,0.0f), 1.0f);
+
   StaticShader static_shader;
 
-  Light light(vec3(0.0f,200.0f,50.0f), vec3(1.0f,1.0f,1.0f));
+  MasterRenderer master_renderer(window_width/window_height);
+
+  Light light(vec3(0.0f,1000.0f,200.0f), vec3(1.0f,1.0f,1.0f));
 
   int num_trees = 250;
   int num_poly_trees = 100;
@@ -70,26 +82,22 @@ int main(void)
   vector<unique_ptr<Entity>> entities;
   populate(entities, num_trees, num_poly_trees, num_fern, num_grass);
 
-  TerrainTexture backTexture(loadDDS("./res/grassy2.dds"));
+  TerrainTexture backTexture(loadDDS("./res/grass.dds"));
   TerrainTexture rTexture(loadDDS("./res/mud.dds"));
   TerrainTexture gTexture(loadDDS("./res/grassFlowers.dds"));
   TerrainTexture bTexture(loadDDS("./res/path.dds"));
   TerrainTexturePack texturePack(&backTexture, &rTexture, &gTexture, &bTexture);
-
   TerrainTexture blendMap(loadDDS("./res/blendMap.dds"));
-
   Terrain terrain1(0,0,&texturePack,&blendMap);
   Terrain terrain2(-1,0,&texturePack,&blendMap);
   //Terrain terrain3(0,-1,&texturePack,&blendMap);
   //Terrain terrain4(-1,-1,&texturePack,&blendMap);
 
-  MasterRenderer master_renderer(window_width/window_height);
-
   float current_time, elapsed_time;
   float last_time = glfwGetTime();
 
-  glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   while(!glfwWindowShouldClose(window.getWindow()))
   {
@@ -99,16 +107,17 @@ int main(void)
 
    fps_counter.update(&window, elapsed_time);
    camera.update(elapsed_time);
-
-   for(auto& entity : entities)
-   {
-     master_renderer.processEntity(entity.get());
-   }
+   player.move(elapsed_time, &window);
 
    master_renderer.processTerrain(&terrain1);
    master_renderer.processTerrain(&terrain2);
    //master_renderer.processTerrain(&terrain3);
    //master_renderer.processTerrain(&terrain4);
+   master_renderer.processEntity(&player);
+   for(auto& entity : entities)
+   {
+     master_renderer.processEntity(entity.get());
+   }
 
    master_renderer.render(&light, &camera);
 
@@ -118,7 +127,6 @@ int main(void)
    {
       glfwSetWindowShouldClose(window.getWindow(), GLFW_TRUE);
    }
-
   }
 
   return 0;

@@ -26,6 +26,7 @@ shared_ptr<ModelTexture> loadModelTexture(const char* texturePath);
 shared_ptr<TexturedModel> loadTexturedModel(const char* objPath, const char* texturePath);
 GLuint loadBMP(const char* texturePath);
 GLuint loadDDS(const char * imagepath);
+GLuint loadPNG(const char * imagepath);
 bool loadAssImp(const char * path, vector<unsigned int> & indices, vector<GLfloat> & vertices, vector<GLfloat> & uvs, vector<GLfloat> & normals);
 
 #endif // LOAD_H

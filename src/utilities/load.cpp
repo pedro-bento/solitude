@@ -212,7 +212,8 @@ bool loadAssImp(const char * path,
 {
 	Assimp::Importer importer;
 
-	const aiScene* scene = importer.ReadFile(path, 0);
+	const aiScene* scene = importer.ReadFile(path,
+    aiProcess_Triangulate | aiProcess_FlipUVs);
 	if(!scene)
   {
 		fprintf(stderr, importer.GetErrorString());

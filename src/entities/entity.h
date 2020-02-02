@@ -25,6 +25,8 @@ public:
 	vec3 getRotation() { return rotation; }
 	float getScale() { return scale; }
 
+	void setPosition(vec3 v) { position = v; }
+
 	void move(vec3 dxyz);
 	void rotate(vec3 dxyz);
 };
