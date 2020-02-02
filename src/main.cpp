@@ -13,16 +13,14 @@ using namespace std;
 #include "./shaders/static_shader.h"
 #include "./models/textured_model.h"
 #include "./textures/model_texture.h"
+#include "./textures/terrain_texture.h"
+#include "./textures/terrain_texture_pack.h"
 #include "./entities/entity.h"
 #include "./entities/light.h"
 #include "./renderer/master_renderer.h"
-
 #include "./terrain/terrain.h"
 
 #include <cstdlib>
-
-const int window_width = 1280;
-const int window_height = 720;
 
 float randFloat(float min, float max)
 {
@@ -31,24 +29,30 @@ float randFloat(float min, float max)
 }
 
 void populate(vector<unique_ptr<Entity>>& entities,
-  int num_trees, int num_fern, int num_grass)
+  int num_trees, int num_poly_trees, int num_fern, int num_grass)
 {
   shared_ptr<TexturedModel> tree = loadTexturedModel("./res/tree.obj","./res/tree.dds");
+  shared_ptr<TexturedModel> poly_tree = loadTexturedModel("./res/lowPolyTree.obj","./res/lowPolyTree.dds");
   shared_ptr<TexturedModel> fern = loadTexturedModel("./res/fern.obj","./res/fern.dds");
   shared_ptr<TexturedModel> grass = loadTexturedModel("./res/grassModel.obj","./res/grassTexture.dds");
   grass->getModelTexture()->setHasTransparency(true);
   grass->getModelTexture()->setUseFakeLighting(true);
 
   for(int i = 0; i < num_trees; i++)
-    entities.push_back(make_unique<Entity>(tree,vec3(randFloat(-200.0f,200.0f),0.0f,randFloat(-200.0f,200.0f)),vec3(0.0f,0.0f,0.0f), 3.0f));
+    entities.push_back(make_unique<Entity>(tree,vec3(randFloat(20.0f,780.0f),0.0f,randFloat(20.0f,780.0f)),vec3(0.0f,0.0f,0.0f), 4.0f));
+  for(int i = 0; i < num_poly_trees; i++)
+    entities.push_back(make_unique<Entity>(poly_tree,vec3(randFloat(20.0f,780.0f),0.0f,randFloat(20.0f,780.0f)),vec3(0.0f,0.0f,0.0f), 0.3f));
   for(int i = 0; i < num_fern; i++)
-    entities.push_back(make_unique<Entity>(fern,vec3(randFloat(-200.0f,200.0f),0.0f,randFloat(-200.0f,200.0f)),vec3(0.0f,0.0f,0.0f), 0.5f));
+    entities.push_back(make_unique<Entity>(fern,vec3(randFloat(20.0f,780.0f),0.0f,randFloat(20.0f,780.0f)),vec3(0.0f,0.0f,0.0f), 0.5f));
   for(int i = 0; i < num_grass; i++)
-    entities.push_back(make_unique<Entity>(grass,vec3(randFloat(-200.0f,200.0f),1.2f,randFloat(-200.0f,200.0f)),vec3(180.0f,0.0f,0.0f), 1.0f));
+    entities.push_back(make_unique<Entity>(grass,vec3(randFloat(20.0f,780.0f),1.2f,randFloat(20.0f,780.0f)),vec3(180.0f,0.0f,0.0f), 1.0f));
 }
 
 int main(void)
 {
+  const int window_width = 1280;
+  const int window_height = 720;
+
   //Application app;
   //app.run();
 
@@ -59,16 +63,25 @@ int main(void)
 
   Light light(vec3(0.0f,200.0f,50.0f), vec3(1.0f,1.0f,1.0f));
 
-  int num_trees = 200;
-  int num_fern = 700;
-  int num_grass = 200;
+  int num_trees = 250;
+  int num_poly_trees = 100;
+  int num_fern = 1000;
+  int num_grass = 1000;
   vector<unique_ptr<Entity>> entities;
-  populate(entities, num_trees, num_fern, num_grass);
+  populate(entities, num_trees, num_poly_trees, num_fern, num_grass);
 
-  Terrain terrain1(0,0,loadModelTexture("./res/grass.dds"));
-  Terrain terrain2(-1,0,terrain1.getModelTexture());
-  Terrain terrain3(0,-1,terrain1.getModelTexture());
-  Terrain terrain4(-1,-1,terrain1.getModelTexture());
+  TerrainTexture backTexture(loadDDS("./res/grassy2.dds"));
+  TerrainTexture rTexture(loadDDS("./res/mud.dds"));
+  TerrainTexture gTexture(loadDDS("./res/grassFlowers.dds"));
+  TerrainTexture bTexture(loadDDS("./res/path.dds"));
+  TerrainTexturePack texturePack(&backTexture, &rTexture, &gTexture, &bTexture);
+
+  TerrainTexture blendMap(loadDDS("./res/blendMap.dds"));
+
+  Terrain terrain1(0,0,&texturePack,&blendMap);
+  Terrain terrain2(-1,0,&texturePack,&blendMap);
+  //Terrain terrain3(0,-1,&texturePack,&blendMap);
+  //Terrain terrain4(-1,-1,&texturePack,&blendMap);
 
   MasterRenderer master_renderer(window_width/window_height);
 
@@ -94,8 +107,8 @@ int main(void)
 
    master_renderer.processTerrain(&terrain1);
    master_renderer.processTerrain(&terrain2);
-   master_renderer.processTerrain(&terrain3);
-   master_renderer.processTerrain(&terrain4);
+   //master_renderer.processTerrain(&terrain3);
+   //master_renderer.processTerrain(&terrain4);
 
    master_renderer.render(&light, &camera);
 

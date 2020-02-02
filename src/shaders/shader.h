@@ -29,6 +29,8 @@ protected:
 	void bindAttribute(GLuint attribute, const GLchar *variableName);
 
 	void loadFloat(GLuint location, GLfloat value);
+	void loadInt(GLuint location, GLint value);
+	void loadBoolean(GLuint location, bool value);
 	void loadVector(GLuint location, vec3 vector);
 	void loadMatrix(GLuint location, mat4 matrix);
 };

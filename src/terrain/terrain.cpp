@@ -1,7 +1,8 @@
 #include "terrain.h"
 
-Terrain::Terrain(int gridX, int gridZ, shared_ptr<ModelTexture> texture)
-: model_texture(texture)
+Terrain::Terrain(int gridX, int gridZ, TerrainTexturePack* _texturePack, TerrainTexture* _blendMap)
+: texturePack(_texturePack),
+  blendMap(_blendMap)
 {
   x = gridX * SIZE;
   z = gridZ * SIZE;

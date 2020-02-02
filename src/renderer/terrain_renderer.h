@@ -22,6 +22,7 @@ public:
 
 private:
   void prepareTerrain(Terrain* terrain);
+  void bindTextures(Terrain* terrain);
   void unbindTexturedModel();
   void loadModelMatrix(Terrain* terrain);
 };

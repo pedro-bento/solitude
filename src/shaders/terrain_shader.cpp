@@ -21,6 +21,20 @@ void TerrainShader::getAllUniformLocations()
 	location_shineDamper = Shader::getUniformLocation("shineDamper");
 	location_reflectivity = Shader::getUniformLocation("reflectivity");
 	location_skyColour = Shader::getUniformLocation("skyColour");
+	location_backgroundTexture = Shader::getUniformLocation("backgroundTexture");
+  location_rTexture = Shader::getUniformLocation("rTexture");
+  location_gTexture = Shader::getUniformLocation("gTexture");
+  location_bTexture = Shader::getUniformLocation("bTexture");
+  location_blendMap = Shader::getUniformLocation("blendMap");
+}
+
+void TerrainShader::connectTextureUnits()
+{
+	Shader::loadInt(location_backgroundTexture, 0);
+	Shader::loadInt(location_rTexture, 1);
+	Shader::loadInt(location_gTexture, 2);
+	Shader::loadInt(location_bTexture, 3);
+	Shader::loadInt(location_blendMap, 4);
 }
 
 void TerrainShader::bindAttributes()

@@ -7,6 +7,7 @@ TerrainRenderer::TerrainRenderer(
 {
   terrain_shader->start();
   terrain_shader->loadProjectionMatrix(projectionMatrix);
+  terrain_shader->connectTextureUnits();
   terrain_shader->stop();
 }
 
@@ -32,13 +33,8 @@ void TerrainRenderer::prepareTerrain(Terrain* terrain)
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,
     terrain->getRawModel()->getIndicesID());
 
-  terrain_shader->loadShineVariables(
-    terrain->getModelTexture()->getShineDamper(),
-    terrain->getModelTexture()->getReflectivity());
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D,
-    terrain->getModelTexture()->getTextureID());
+  terrain_shader->loadShineVariables(1.0f,0.0f);
+  bindTextures(terrain);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER,
@@ -54,6 +50,29 @@ void TerrainRenderer::prepareTerrain(Terrain* terrain)
 	glBindBuffer(GL_ARRAY_BUFFER,
     terrain->getRawModel()->getNormalsID());
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+}
+
+void TerrainRenderer::bindTextures(Terrain* terrain)
+{
+  glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D,
+    terrain->getTexturePack()->getBackTexture()->getTextureID());
+
+  glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D,
+    terrain->getTexturePack()->getRTexture()->getTextureID());
+
+  glActiveTexture(GL_TEXTURE2);
+  glBindTexture(GL_TEXTURE_2D,
+    terrain->getTexturePack()->getGTexture()->getTextureID());
+
+  glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D,
+    terrain->getTexturePack()->getBTexture()->getTextureID());
+
+  glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D,
+    terrain->getBlendMap()->getTextureID());
 }
 
 void TerrainRenderer::unbindTexturedModel()

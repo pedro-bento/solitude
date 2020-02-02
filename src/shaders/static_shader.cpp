@@ -60,10 +60,7 @@ void StaticShader::loadShineVariables(float damper, float reflectivity)
 
 void StaticShader::loadFakeLightingVariable(bool useFake)
 {
-	if(useFake)
-		Shader::loadFloat(location_useFakeLighting, 1.0f);
-	else
-		Shader::loadFloat(location_useFakeLighting, 0.0f);
+	Shader::loadBoolean(location_useFakeLighting, useFake);
 }
 
 void StaticShader::loadSkyColour(vec3 colour)

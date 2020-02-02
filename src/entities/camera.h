@@ -19,7 +19,7 @@ class Camera
 	float yaw = 0.0f;
 	float roll = 0.0f;
 	float mouse_speed = 0.3f;
-	float speed = 12.5f;
+	float speed = 30.0f;
 	Window* window;
 
 public:

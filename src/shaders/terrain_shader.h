@@ -22,6 +22,11 @@ class TerrainShader : public Shader
   GLuint location_shineDamper;
   GLuint location_reflectivity;
   GLuint location_skyColour;
+  GLuint location_backgroundTexture;
+  GLuint location_rTexture;
+  GLuint location_gTexture;
+  GLuint location_bTexture;
+  GLuint location_blendMap;
 
 public:
   TerrainShader();
@@ -30,6 +35,7 @@ public:
   void getAllUniformLocations() override;
   void bindAttributes() override;
 
+  void connectTextureUnits();
   void loadTransformationMatrix(mat4 matrix);
   void loadProjectionMatrix(mat4 matrix);
   void loadViewMatrix(Camera* camera);
