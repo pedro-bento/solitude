@@ -11,7 +11,7 @@ mat4 createTransformationMatrix(vec3 translation, vec3 rotation, float scale)
 	return matrix;
 }
 
-mat4 createViewMatrix(Camera* camera)
+mat4 createViewMatrix(FPPCamera* camera)
 {
 	vec3 direction(cos(camera->getPitch()) * sin(camera->getYaw()),
 		sin(camera->getPitch()), cos(camera->getPitch()) * cos(camera->getYaw()));

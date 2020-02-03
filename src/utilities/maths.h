@@ -8,9 +8,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
-#include "../entities/camera.h"
+#include "../entities/fpp_camera.h"
 
 mat4 createTransformationMatrix(vec3 translation, vec3 rotation, float scale);
-mat4 createViewMatrix(Camera* camera);
+mat4 createViewMatrix(FPPCamera* camera);
 
 #endif

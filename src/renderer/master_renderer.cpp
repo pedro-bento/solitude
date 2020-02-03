@@ -21,7 +21,7 @@ void MasterRenderer::prepare()
 	glClearColor(skyColour.x, skyColour.y, skyColour.z, 1.0f);
 }
 
-void MasterRenderer::render(Light* sun, Camera* camera)
+void MasterRenderer::render(Light* sun, FPPCamera* camera)
 {
   prepare();
 

@@ -16,7 +16,7 @@ using namespace glm;
 #include "../models/textured_model.h"
 #include "../entities/entity.h"
 #include "../entities/light.h"
-#include "../entities/camera.h"
+#include "../entities/fpp_camera.h"
 #include "terrain_renderer.h"
 #include "../shaders/terrain_shader.h"
 #include "../terrain/terrain.h"
@@ -49,7 +49,7 @@ public:
   }
 
   void prepare();
-  void render(Light* sun, Camera* camera);
+  void render(Light* sun, FPPCamera* camera);
   void processEntity(Entity* entity);
   void processTerrain(Terrain* terrain);
 };

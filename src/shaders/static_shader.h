@@ -8,7 +8,7 @@
 using namespace glm;
 
 #include "shader.h"
-#include "../entities/camera.h"
+#include "../entities/fpp_camera.h"
 #include "../entities/light.h"
 #include "../utilities/maths.h"
 
@@ -33,7 +33,7 @@ public:
 
 	void loadTransformationMatrix(mat4 matrix);
 	void loadProjectionMatrix(mat4 matrix);
-	void loadViewMatrix(Camera* camera);
+	void loadViewMatrix(FPPCamera* camera);
 	void loadLight(Light* light);
 	void loadShineVariables(float damper, float reflectivity);
 	void loadFakeLightingVariable(bool useFake);

@@ -41,7 +41,7 @@ void StaticShader::loadProjectionMatrix(mat4 matrix)
 	Shader::loadMatrix(location_projectionMatrix, matrix);
 }
 
-void StaticShader::loadViewMatrix(Camera* camera)
+void StaticShader::loadViewMatrix(FPPCamera* camera)
 {
 	Shader::loadMatrix(location_viewMatrix, createViewMatrix(camera));
 }
