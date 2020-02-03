@@ -20,7 +20,7 @@ void TerrainRenderer::render(vector<Terrain*> terrains)
     glDrawElements(
       GL_TRIANGLES,
       terrain->getRawModel()->getVertexCount(),
-      GL_UNSIGNED_INT,
+      GL_UNSIGNED_SHORT,
       NULL);
     unbindTexturedModel();
   }

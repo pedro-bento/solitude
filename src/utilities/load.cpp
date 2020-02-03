@@ -4,7 +4,7 @@ string readShaderFromFile(const char* filePath);
 void compileShader(GLuint shaderID, string shaderCode);
 GLuint createVAO();
 GLuint bindDataBuffer(vector<GLfloat> data);
-GLuint bindIndicesBuffer(vector<unsigned int> indices);
+GLuint bindIndicesBuffer(vector<unsigned short> indices);
 
 GLuint loadShader(const char* shaderPath, GLenum shader)
 {
@@ -15,7 +15,7 @@ GLuint loadShader(const char* shaderPath, GLenum shader)
 }
 
 shared_ptr<RawModel> loadRawModel(
-  vector<GLfloat> vertices, vector<unsigned int> indices,
+  vector<GLfloat> vertices, vector<unsigned short> indices,
   vector<GLfloat> uvs, vector<GLfloat> normals)
 {
     return make_shared<RawModel>(
@@ -34,7 +34,7 @@ shared_ptr<ModelTexture> loadModelTexture(const char* texturePath)
 
 shared_ptr<TexturedModel> loadTexturedModel(const char* objPath, const char* texturePath)
 {
-  vector<unsigned int> indices;
+  vector<unsigned short> indices;
 	vector<GLfloat> vertices;
 	vector<GLfloat> uvs;
 	vector<GLfloat> normals;
@@ -44,78 +44,6 @@ shared_ptr<TexturedModel> loadTexturedModel(const char* objPath, const char* tex
   return make_shared<TexturedModel>(
     loadRawModel(vertices, indices, uvs, normals),
     loadModelTexture(texturePath));
-}
-
-GLuint loadBMP(const char* texturePath)
-{
-    unsigned char header[54];
-    unsigned int dataPos;
-    unsigned int width, height;
-    unsigned int imageSize;
-    unsigned char* data;
-
-    FILE* file;
-    fopen_s(&file, texturePath, "rb");
-    if(file == NULL)
-    {
-        fprintf(stderr, "Failed to open: %s\n", texturePath);
-        return 0;
-    }
-
-    if(fread(header, 1, 54, file) != 54)
-    {
-        fprintf(stderr, "%s is not a BMP file.\n", texturePath);
-        fclose(file);
-        return 0;
-    }
-
-    if (header[0] != 'B' || header[1] != 'M')
-    {
-        fprintf(stderr, "%s is not a BMP file.\n", texturePath);
-        fclose(file);
-        return 0;
-    }
-
-    dataPos = *(int*)&(header[0x0A]);
-    imageSize = *(int*)&(header[0x22]);
-    width = *(int*)&(header[0x12]);
-    height = *(int*)&(header[0x16]);
-
-    if (imageSize == 0)
-    {
-        imageSize = width * height * 3;
-    }
-
-    if (dataPos == 0)
-    {
-        dataPos = 54;
-    }
-
-    data = new unsigned char[imageSize];
-
-    if (!fread(data, 1, imageSize, file))
-    {
-        fprintf(stderr, "Could not read file: %s\n", texturePath);
-        fclose(file);
-        return 0;
-    }
-
-    fclose(file);
-
-    GLuint textureID;
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
-
-    delete[] data;
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    return textureID;
 }
 
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
@@ -205,7 +133,7 @@ GLuint loadDDS(const char * imagepath)
 }
 
 bool loadAssImp(const char * path,
-	              vector<unsigned int> & indices,
+	              vector<unsigned short> & indices,
 	              vector<GLfloat> & vertices,
 	              vector<GLfloat> & uvs,
                 vector<GLfloat> & normals)
@@ -316,12 +244,12 @@ GLuint bindDataBuffer(vector<GLfloat> data)
 	return vboID;
 }
 
-GLuint bindIndicesBuffer(vector<unsigned int> indices)
+GLuint bindIndicesBuffer(vector<unsigned short> indices)
 {
 	GLuint vboID;
 	glGenBuffers(1, &vboID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * indices.size(), &indices[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	return vboID;
 }

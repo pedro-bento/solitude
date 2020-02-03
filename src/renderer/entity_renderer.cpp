@@ -32,7 +32,7 @@ void EntityRenderer::render(
         glDrawElements(
           GL_TRIANGLES,
           it.first->getRawModel()->getVertexCount(),
-          GL_UNSIGNED_INT,
+          GL_UNSIGNED_SHORT,
           NULL);
       }
       unbindTexturedModel();

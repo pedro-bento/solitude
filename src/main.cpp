@@ -50,6 +50,8 @@ void populate(vector<unique_ptr<Entity>>& entities,
     entities.push_back(make_unique<Entity>(grass,vec3(randFloat(20.0f,780.0f),0.0f,randFloat(20.0f,780.0f)),vec3(0.0f,0.0f,0.0f), 1.0f));
 }
 
+// TODO: implement 3rd person!!!
+
 int main(void)
 {
   const int window_width = 1280;
@@ -67,7 +69,7 @@ int main(void)
 
   shared_ptr<TexturedModel> jornal =
     loadTexturedModel("./res/player.obj","./res/texture.dds");
-  Player player(jornal, vec3(5.0f,5.0f,5.0f), vec3(0.0f,0.0f,0.0f), 1.0f);
+  Player player(jornal, vec3(5.0f,0.0f,5.0f), vec3(0.0f,0.0f,0.0f), 1.0f);
 
   StaticShader static_shader;
 
@@ -107,7 +109,7 @@ int main(void)
 
    fps_counter.update(&window, elapsed_time);
    camera.update(elapsed_time);
-   player.move(elapsed_time, &window);
+   //player.move(elapsed_time, &window);
 
    master_renderer.processTerrain(&terrain1);
    master_renderer.processTerrain(&terrain2);

@@ -22,7 +22,8 @@ void Camera::update(float elapsed_time)
   }else if(glfwGetKey(window->getWindow(), GLFW_KEY_DOWN) == GLFW_PRESS
       || glfwGetKey(window->getWindow(), GLFW_KEY_S) == GLFW_PRESS){
       position -= direction * elapsed_time * speed;
-  }else if(glfwGetKey(window->getWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS
+  }
+  if(glfwGetKey(window->getWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS
       || glfwGetKey(window->getWindow(), GLFW_KEY_D) == GLFW_PRESS){
       position += right * elapsed_time * speed;
   }else if(glfwGetKey(window->getWindow(), GLFW_KEY_LEFT) == GLFW_PRESS

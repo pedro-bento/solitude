@@ -22,7 +22,7 @@ shared_ptr<RawModel> Terrain::generateTerrain()
     normals.resize(count * 3);
 		vector<GLfloat> textureCoords;
     textureCoords.resize(count*2);
-		vector<unsigned int> indices;
+		vector<unsigned short> indices;
     indices.resize(6*(VERTEX_COUNT-1)*(VERTEX_COUNT-1));
 		int vertexPointer = 0;
 		for(int i=0;i<VERTEX_COUNT;i++){
@@ -39,12 +39,12 @@ shared_ptr<RawModel> Terrain::generateTerrain()
 			}
 		}
 		int pointer = 0;
-		for(unsigned int gz=0;gz<VERTEX_COUNT-1;gz++){
-			for(unsigned int gx=0;gx<VERTEX_COUNT-1;gx++){
-				unsigned int topLeft = (gz*VERTEX_COUNT)+gx;
-				unsigned int topRight = topLeft + 1;
-				unsigned int bottomLeft = ((gz+1)*VERTEX_COUNT)+gx;
-				unsigned int bottomRight = bottomLeft + 1;
+		for(unsigned short gz=0;gz<VERTEX_COUNT-1;gz++){
+			for(unsigned short gx=0;gx<VERTEX_COUNT-1;gx++){
+				unsigned short topLeft = (gz*VERTEX_COUNT)+gx;
+				unsigned short topRight = topLeft + 1;
+				unsigned short bottomLeft = ((gz+1)*VERTEX_COUNT)+gx;
+				unsigned short bottomRight = bottomLeft + 1;
 				indices[pointer++] = topLeft;
 				indices[pointer++] = bottomLeft;
 				indices[pointer++] = topRight;

@@ -16,7 +16,7 @@ class Player : public Entity
   const float TURN_SPEED = 160;
   const float GRAVITY = -50;
   const float JUMP_POWER = 30;
-  const float TERRAIN_HEIGHT = 1.0f;
+  const float TERRAIN_HEIGHT = 0.0f;
 
   float currentSpeed = 0;
   float currentTurnSpeed = 0;
