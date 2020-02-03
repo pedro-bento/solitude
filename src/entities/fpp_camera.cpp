@@ -5,7 +5,7 @@ FPPCamera::FPPCamera(Window *_window)
 {
 }
 
-void FPPCamera::update(float elapsed_time)
+void FPPCamera::move(Terrain* terrain, float elapsed_time)
 {
   double xpos, ypos;
   glfwGetCursorPos(window->getWindow(), &xpos, &ypos);
@@ -40,10 +40,11 @@ void FPPCamera::update(float elapsed_time)
 
   upwardsSpeed += GRAVITY * elapsed_time;
   position.y += upwardsSpeed * elapsed_time;
-  if(position.y < TERRAIN_HEIGHT + PLAYER_HEIGHT)
+  float terrainHeight = terrain->getHeightOfTerrain(position.x, position.z);
+  if(position.y < terrainHeight + PLAYER_HEIGHT)
   {
     upwardsSpeed = 0;
-    position.y = TERRAIN_HEIGHT + PLAYER_HEIGHT;
+    position.y = terrainHeight + PLAYER_HEIGHT;
     isInAir = false;
   }
 }

@@ -2,7 +2,7 @@
 
 MasterRenderer::MasterRenderer(float aspectRatio)
 : skyColour(0.53f, 0.81f, 0.98f),
-	projectionMatrix(perspective(radians(70.0f), aspectRatio, 0.1f, 200.0f)),
+	projectionMatrix(perspective(radians(70.0f), aspectRatio, 0.1f, 512.0f)),
 	entity_renderer(&static_shader, projectionMatrix),
 	terrain_renderer(&terrain_shader, projectionMatrix)
 {

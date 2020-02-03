@@ -30,7 +30,7 @@ float randFloat(float min, float max)
   return min + f * (max - min);
 }
 
-void populate(vector<unique_ptr<Entity>>& entities,
+void populate(Terrain* terrain, vector<unique_ptr<Entity>>& entities,
   int num_trees, int num_poly_trees, int num_fern, int num_grass)
 {
   shared_ptr<TexturedModel> tree = loadTexturedModel("./res/tree.obj","./res/tree.dds");
@@ -41,13 +41,29 @@ void populate(vector<unique_ptr<Entity>>& entities,
   grass->getModelTexture()->setUseFakeLighting(true);
 
   for(int i = 0; i < num_trees; i++)
-    entities.push_back(make_unique<Entity>(tree,vec3(randFloat(20.0f,780.0f),0.0f,randFloat(20.0f,780.0f)),vec3(0.0f,0.0f,0.0f), 8.0f));
+  {
+    float x = randFloat(20.0f,1000.0f);
+    float z = randFloat(20.0f,1000.0f);
+    entities.push_back(make_unique<Entity>(tree,vec3(x,terrain->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 8.0f));
+  }
   for(int i = 0; i < num_poly_trees; i++)
-    entities.push_back(make_unique<Entity>(poly_tree,vec3(randFloat(20.0f,780.0f),0.0f,randFloat(20.0f,780.0f)),vec3(0.0f,0.0f,0.0f), 0.7f));
+  {
+    float x = randFloat(20.0f,1000.0f);
+    float z = randFloat(20.0f,1000.0f);
+    entities.push_back(make_unique<Entity>(poly_tree,vec3(x,terrain->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.7f));
+  }
   for(int i = 0; i < num_fern; i++)
-    entities.push_back(make_unique<Entity>(fern,vec3(randFloat(20.0f,780.0f),0.0f,randFloat(20.0f,780.0f)),vec3(0.0f,0.0f,0.0f), 0.4f));
+  {
+    float x = randFloat(20.0f,1000.0f);
+    float z = randFloat(20.0f,1000.0f);
+    entities.push_back(make_unique<Entity>(fern,vec3(x,terrain->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.4f));
+  }
   for(int i = 0; i < num_grass; i++)
-    entities.push_back(make_unique<Entity>(grass,vec3(randFloat(20.0f,780.0f),0.0f,randFloat(20.0f,780.0f)),vec3(0.0f,0.0f,0.0f), 0.8f));
+  {
+    float x = randFloat(20.0f,1000.0f);
+    float z = randFloat(20.0f,1000.0f);
+    entities.push_back(make_unique<Entity>(grass,vec3(x,terrain->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.8f));
+  }
 }
 
 // TODO: implement 3rd person!!!
@@ -66,10 +82,7 @@ int main(void)
   FpsCounter fps_counter;
   StaticShader static_shader;
   MasterRenderer master_renderer(window_width/window_height);
-  Light light(vec3(0.0f,1000.0f,200.0f), vec3(1.0f,1.0f,1.0f));
-
-  vector<unique_ptr<Entity>> entities;
-  populate(entities, 250, 100, 1000, 1000);
+  Light light(vec3(0.0f,300.0f,200.0f), vec3(1.0f,1.0f,1.0f));
 
   TerrainTexture backTexture(loadDDS("./res/grass.dds"));
   TerrainTexture rTexture(loadDDS("./res/mud.dds"));
@@ -78,9 +91,12 @@ int main(void)
   TerrainTexturePack texturePack(&backTexture, &rTexture, &gTexture, &bTexture);
   TerrainTexture blendMap(loadDDS("./res/blendMap.dds"));
   Terrain terrain1(0,0,&texturePack,&blendMap);
-  Terrain terrain2(-1,0,&texturePack,&blendMap);
+  //Terrain terrain2(-1,0,&texturePack,&blendMap);
   //Terrain terrain3(0,-1,&texturePack,&blendMap);
   //Terrain terrain4(-1,-1,&texturePack,&blendMap);
+
+  vector<unique_ptr<Entity>> entities;
+  populate(&terrain1, entities, 250, 100, 1000, 1000);
 
   float current_time, elapsed_time;
   float last_time = glfwGetTime();
@@ -95,10 +111,9 @@ int main(void)
    last_time = current_time;
 
    fps_counter.update(&window, elapsed_time);
-   fpp_camera.update(elapsed_time);
+   fpp_camera.move(&terrain1, elapsed_time);
 
    master_renderer.processTerrain(&terrain1);
-   master_renderer.processTerrain(&terrain2);
    for(auto& entity : entities)
    {
      master_renderer.processEntity(entity.get());

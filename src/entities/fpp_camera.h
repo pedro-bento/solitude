@@ -13,6 +13,7 @@ using namespace glm;
 using namespace std;
 
 #include "../window.h"
+#include "../terrain/terrain.h"
 
 class FPPCamera
 {
@@ -21,13 +22,12 @@ class FPPCamera
 	float yaw = 0.0f;
 	float roll = 0.0f;
 	float mouse_speed = 0.3f;
-	float speed = 30.0f;
+	float speed = 40.0f;
 	Window* window;
 
 	const float PLAYER_HEIGHT = 6.5f;
 	const float GRAVITY = -100;
   const float JUMP_POWER = 40;
-  const float TERRAIN_HEIGHT = 0.0f;
 	float upwardsSpeed = 0;
   bool isInAir = false;
 
@@ -39,7 +39,7 @@ public:
   float getPitch() { return pitch; }
   float getYaw() { return yaw; }
 
-	void update(float elapsed_time);
+	void move(Terrain* terrain, float elapsed_time);
 
 private:
 	void jump();
