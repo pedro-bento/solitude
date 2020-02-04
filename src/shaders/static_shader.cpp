@@ -22,6 +22,8 @@ void StaticShader::getAllUniformLocations()
 	location_reflectivity = Shader::getUniformLocation("reflectivity");
 	location_useFakeLighting = Shader::getUniformLocation("useFakeLighting");
 	location_skyColour = Shader::getUniformLocation("skyColour");
+	location_numberOfRows = Shader::getUniformLocation("numberOfRows");
+	location_offset = Shader::getUniformLocation("offset");
 }
 
 void StaticShader::bindAttributes()
@@ -66,4 +68,14 @@ void StaticShader::loadFakeLightingVariable(bool useFake)
 void StaticShader::loadSkyColour(vec3 colour)
 {
 	Shader::loadVector(location_skyColour, colour);
+}
+
+void StaticShader::loadNumberOfRows(int numberOfRows)
+{
+	Shader::loadFloat(location_numberOfRows, numberOfRows);
+}
+
+void StaticShader::loadOffset(float x, float y)
+{
+	Shader::load2DVector(location_offset, vec2(x,y));
 }

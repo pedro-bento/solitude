@@ -23,6 +23,8 @@ class StaticShader : public Shader
 	GLuint location_reflectivity;
 	GLuint location_useFakeLighting;
 	GLuint location_skyColour;
+	GLuint location_numberOfRows;
+	GLuint location_offset;
 
 public:
 	StaticShader();
@@ -38,6 +40,8 @@ public:
 	void loadShineVariables(float damper, float reflectivity);
 	void loadFakeLightingVariable(bool useFake);
 	void loadSkyColour(vec3 colour);
+	void loadNumberOfRows(int numberOfRows);
+	void loadOffset(float x, float y);
 };
 
 #endif // STATIC_SHADER_H

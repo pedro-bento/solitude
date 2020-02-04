@@ -18,7 +18,7 @@ class Terrain
 {
   const float SIZE = 1024;
   const float VERTEX_COUNT = SIZE/8;
-  const float MAX_HEIGHT = 100;
+  const float MAX_HEIGHT = 40;
 
   float x;
   float z;

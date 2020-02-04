@@ -33,6 +33,7 @@ protected:
 	void loadBoolean(GLuint location, bool value);
 	void loadVector(GLuint location, vec3 vector);
 	void loadMatrix(GLuint location, mat4 matrix);
+	void load2DVector(GLuint location, vec2 vector);
 };
 
 #endif // SHADER_H

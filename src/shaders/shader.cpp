@@ -89,3 +89,8 @@ void Shader::loadMatrix(GLuint location, mat4 matrix)
 {
 	glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
 }
+
+void Shader::load2DVector(GLuint location, vec2 vector)
+{
+	glUniform2f(location, vector.x, vector.y);
+}

@@ -56,6 +56,9 @@ void EntityRenderer::prepareTexturedModel(
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,
     textured_model->getRawModel()->getIndicesID());
 
+  static_shader->loadNumberOfRows(
+    textured_model->getModelTexture()->getNumberOfRows());
+
   static_shader->loadShineVariables(
     textured_model->getModelTexture()->getShineDamper(),
     textured_model->getModelTexture()->getReflectivity());
@@ -94,4 +97,5 @@ void EntityRenderer::prepareInstance(Entity* entity)
 {
   mat4 transformationMatrix = createTransformationMatrix(entity->getPosition(), entity->getRotation(), entity->getScale());
 	static_shader->loadTransformationMatrix(transformationMatrix);
+  static_shader->loadOffset(entity->getTextureXOffset(),entity->getTextureYOffset());
 }

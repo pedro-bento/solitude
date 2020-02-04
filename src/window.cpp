@@ -1,11 +1,19 @@
 #include "window.h"
 
-Window::Window(int _width, int _height, const char* _title)
+Window::Window()
+: last_time(glfwGetTime())
 {
 	if(!glfwInit())
 	{
 		fprintf(stderr, "Failed to initialize GLFW.\n");
 	}
+
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+	glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -13,11 +21,10 @@ Window::Window(int _width, int _height, const char* _title)
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	width = _width;
-	height = _height;
-	title = _title;
+	width = mode->width;
+	height = mode->height;
 
-	window = glfwCreateWindow(width, height, title, NULL, NULL);
+	window = glfwCreateWindow(width, height, title, glfwGetPrimaryMonitor(), NULL);
 	if(window == NULL)
 	{
 		fprintf(stderr, "Failed to open GLFW window.\n");
@@ -43,4 +50,16 @@ Window::~Window()
 {
   glfwDestroyWindow(window);
 	glfwTerminate();
+}
+
+bool Window::shouldClose()
+{
+	return (bool)glfwWindowShouldClose(window);
+}
+
+void Window::update()
+{
+	current_time = glfwGetTime();
+	elapsed_time = current_time - last_time;
+	last_time = current_time;
 }

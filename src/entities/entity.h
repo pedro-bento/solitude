@@ -16,8 +16,11 @@ class Entity
 	vec3 rotation;
 	float scale;
 
+	int textureIndex = 0;
+
 public:
 	Entity(shared_ptr<TexturedModel> _textured_model, vec3 _position, vec3 _rotation, float _scale);
+	Entity(shared_ptr<TexturedModel> _textured_model, vec3 _position, vec3 _rotation, float _scale, int _textureIndex);
   ~Entity();
 
 	shared_ptr<TexturedModel> getTexturedModel() { return textured_model; }
@@ -26,6 +29,9 @@ public:
 	float getScale() { return scale; }
 
 	void setPosition(vec3 v) { position = v; }
+
+	float getTextureXOffset();
+	float getTextureYOffset();
 
 	void move(vec3 dxyz);
 	void rotate(vec3 dxyz);
