@@ -1,5 +1,4 @@
 //#include "application.h"
-
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -21,15 +20,6 @@ using namespace std;
 #include "./terrain/terrain.h"
 #include "./entities/player.h"
 
-#include <cstdlib>
-#include <time.h>
-
-float randFloat(float min, float max)
-{
-  float f = (float)rand() / RAND_MAX;
-  return min + f * (max - min);
-}
-
 void populate(Terrain* terrain, vector<unique_ptr<Entity>>& entities,
   int num_trees, int num_poly_trees, int num_fern, int num_grass)
 {
@@ -42,26 +32,26 @@ void populate(Terrain* terrain, vector<unique_ptr<Entity>>& entities,
 
   for(int i = 0; i < num_trees; i++)
   {
-    float x = randFloat(20.0f,1000.0f);
-    float z = randFloat(20.0f,1000.0f);
+    float x = Random::randomFloat(20.0f,1000.0f);
+    float z = Random::randomFloat(20.0f,1000.0f);
     entities.push_back(make_unique<Entity>(tree,vec3(x,terrain->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 8.0f));
   }
   for(int i = 0; i < num_poly_trees; i++)
   {
-    float x = randFloat(20.0f,1000.0f);
-    float z = randFloat(20.0f,1000.0f);
+    float x = Random::randomFloat(20.0f,1000.0f);
+    float z = Random::randomFloat(20.0f,1000.0f);
     entities.push_back(make_unique<Entity>(poly_tree,vec3(x,terrain->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.7f));
   }
   for(int i = 0; i < num_fern; i++)
   {
-    float x = randFloat(20.0f,1000.0f);
-    float z = randFloat(20.0f,1000.0f);
+    float x = Random::randomFloat(20.0f,1000.0f);
+    float z = Random::randomFloat(20.0f,1000.0f);
     entities.push_back(make_unique<Entity>(fern,vec3(x,terrain->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.4f));
   }
   for(int i = 0; i < num_grass; i++)
   {
-    float x = randFloat(20.0f,1000.0f);
-    float z = randFloat(20.0f,1000.0f);
+    float x = Random::randomFloat(20.0f,1000.0f);
+    float z = Random::randomFloat(20.0f,1000.0f);
     entities.push_back(make_unique<Entity>(grass,vec3(x,terrain->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.8f));
   }
 }
@@ -72,7 +62,6 @@ int main(void)
 {
   const int window_width = 1280;
   const int window_height = 720;
-  srand(time(NULL));
 
   //Application app;
   //app.run();
@@ -82,7 +71,7 @@ int main(void)
   FpsCounter fps_counter;
   StaticShader static_shader;
   MasterRenderer master_renderer(window_width/window_height);
-  Light light(vec3(0.0f,300.0f,200.0f), vec3(1.0f,1.0f,1.0f));
+  Light light(vec3(0.0f,500.0f,100.0f), vec3(1.0f,1.0f,1.0f));
 
   TerrainTexture backTexture(loadDDS("./res/grass.dds"));
   TerrainTexture rTexture(loadDDS("./res/mud.dds"));
@@ -96,7 +85,7 @@ int main(void)
   //Terrain terrain4(-1,-1,&texturePack,&blendMap);
 
   vector<unique_ptr<Entity>> entities;
-  populate(&terrain1, entities, 250, 100, 1000, 1000);
+  populate(&terrain1, entities, 150, 80, 1500, 0);
 
   float current_time, elapsed_time;
   float last_time = glfwGetTime();

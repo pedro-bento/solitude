@@ -1,4 +1,5 @@
 #include "maths.h"
+#include "../entities/fpp_camera.h"
 
 mat4 createTransformationMatrix(vec3 translation, vec3 rotation, float scale)
 {
@@ -20,7 +21,7 @@ mat4 createViewMatrix(FPPCamera* camera)
 	return lookAt(camera->getPosition(), camera->getPosition() + direction, up);
 }
 
-float barryCentric(vec3 p1, vec3 p2, vec3 p3, vec2 pos)
+float baryCentric(vec3 p1, vec3 p2, vec3 p3, vec2 pos)
 {
   float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
   float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
