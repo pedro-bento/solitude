@@ -8,6 +8,7 @@ Window::Window()
 		fprintf(stderr, "Failed to initialize GLFW.\n");
 	}
 
+	/*
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 	glfwWindowHint(GLFW_RED_BITS, mode->redBits);
@@ -15,16 +16,17 @@ Window::Window()
 	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
+	width = mode->width;
+	height = mode->height;
+	*/
+
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	width = mode->width;
-	height = mode->height;
-
-	window = glfwCreateWindow(width, height, title, glfwGetPrimaryMonitor(), NULL);
+	window = glfwCreateWindow(width, height, title, NULL, NULL);
 	if(window == NULL)
 	{
 		fprintf(stderr, "Failed to open GLFW window.\n");

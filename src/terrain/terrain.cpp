@@ -1,13 +1,19 @@
 #include "terrain.h"
 #include "../utilities/maths.h"
 
-Terrain::Terrain(int gridX, int gridZ, TerrainTexturePack* _texturePack, TerrainTexture* _blendMap)
-: texturePack(_texturePack),
-  blendMap(_blendMap),
-  heights(VERTEX_COUNT + 1, vector<float>(VERTEX_COUNT + 1))
+Terrain::Terrain(int gridX, int gridZ, TerrainTexturePack* _texturePack,
+  TerrainTexture* _blendMap, PerlinNoise* _noise,
+  float size, float vertex_count, float max_height)
+: texturePack(_texturePack), blendMap(_blendMap),
+  heights(VERTEX_COUNT + 1, vector<float>(VERTEX_COUNT + 1)),
+  noise(_noise), SIZE(size), VERTEX_COUNT(vertex_count),
+  MAX_HEIGHT(max_height)
 {
   x = gridX * SIZE;
   z = gridZ * SIZE;
+
+  xOffset = gridX * (VERTEX_COUNT-1);
+  zOffset = gridZ * (VERTEX_COUNT-1);
 
   raw_model = generateTerrain();
 }
@@ -23,12 +29,7 @@ float Terrain::getHeightOfTerrain(float worldX, float worldZ)
   float gridSquareSize = SIZE / (VERTEX_COUNT - 1);
   int gridX = (int)floor(terrainX/gridSquareSize);
   int gridZ = (int)floor(terrainZ/gridSquareSize);
-
-  if(gridX >= VERTEX_COUNT - 1 || gridZ >= VERTEX_COUNT - 1 || gridX < 0 || gridZ < 0)
-  {
-    return 0;
-  }
-
+  
   float xCoord = fmod(terrainX,gridSquareSize)/gridSquareSize;
   float zCoord = fmod(terrainZ,gridSquareSize)/gridSquareSize;
 
@@ -53,39 +54,43 @@ float Terrain::getHeightOfTerrain(float worldX, float worldZ)
 shared_ptr<RawModel> Terrain::generateTerrain()
 {
 	int count = VERTEX_COUNT * VERTEX_COUNT;
-	vector<GLfloat> vertices; vertices.resize(count * 3);
-	vector<GLfloat> normals; normals.resize(count * 3);
-	vector<GLfloat> textureCoords; textureCoords.resize(count*2);
-	vector<unsigned short> indices; indices.resize(6*(VERTEX_COUNT-1)*(VERTEX_COUNT-1));
-	int vertexPointer = 0;
+	vector<GLfloat> vertices(count * 3);
+	vector<GLfloat> normals(count * 3);
+	vector<GLfloat> textureCoords(count*2);
+	vector<unsigned short> indices(6*(VERTEX_COUNT-1)*(VERTEX_COUNT-1));
 
-	for(int z = 0; z < VERTEX_COUNT; z++)
+	int vertexPointer = 0;
+	for(int j = 0; j < VERTEX_COUNT; j++)
   {
-		for(int x = 0; x < VERTEX_COUNT; x++)
+		for(int i = 0; i < VERTEX_COUNT; i++)
     {
-			vertices[vertexPointer*3] = (GLfloat)x/((GLfloat)VERTEX_COUNT - 1) * SIZE;
-      float height = noise.getPerlinNoise(x, z) * MAX_HEIGHT;
-      heights[z][x] = height;
+      float height = noise->getPerlinNoise(i+xOffset, j+zOffset) * MAX_HEIGHT;
+      heights[j][i] = height;
+
+			vertices[vertexPointer*3] = (GLfloat)i / ((GLfloat)VERTEX_COUNT - 1) * SIZE;
 			vertices[vertexPointer*3+1] = height;
-			vertices[vertexPointer*3+2] = (GLfloat)z/((GLfloat)VERTEX_COUNT - 1) * SIZE;
-      vec3 normal = calculateNormal(x, z);
+			vertices[vertexPointer*3+2] = (GLfloat)j / ((GLfloat)VERTEX_COUNT - 1) * SIZE;
+
+      vec3 normal = calculateNormal(i, j);
 			normals[vertexPointer*3] = normal.x;
 			normals[vertexPointer*3+1] = normal.y;
 			normals[vertexPointer*3+2] = normal.z;
-			textureCoords[vertexPointer*2] = (GLfloat)x/((GLfloat)VERTEX_COUNT - 1);
-			textureCoords[vertexPointer*2+1] = (GLfloat)z/((GLfloat)VERTEX_COUNT - 1);
+
+			textureCoords[vertexPointer*2] = (GLfloat)i / ((GLfloat)VERTEX_COUNT - 1);
+			textureCoords[vertexPointer*2+1] = (GLfloat)j / ((GLfloat)VERTEX_COUNT - 1);
+
 			vertexPointer++;
 		}
 	}
 
 	int pointer = 0;
-	for(unsigned short gz=0; gz<VERTEX_COUNT-1; gz++)
+	for(unsigned short gz = 0; gz < VERTEX_COUNT-1; gz++)
   {
-		for(unsigned short gx=0; gx<VERTEX_COUNT-1; gx++)
+		for(unsigned short gx = 0; gx < VERTEX_COUNT-1; gx++)
     {
-			unsigned short topLeft = (gz*VERTEX_COUNT)+gx;
+			unsigned short topLeft = (gz * VERTEX_COUNT) + gx;
 			unsigned short topRight = topLeft + 1;
-			unsigned short bottomLeft = ((gz+1)*VERTEX_COUNT)+gx;
+			unsigned short bottomLeft = ((gz + 1) * VERTEX_COUNT) + gx;
 			unsigned short bottomRight = bottomLeft + 1;
 			indices[pointer++] = topLeft;
 			indices[pointer++] = bottomLeft;

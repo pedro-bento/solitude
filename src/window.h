@@ -12,8 +12,8 @@ private:
 	float current_time = 0;
 	float last_time = 0;
 	float elapsed_time = 0;
-	int width;
-	int height;
+	int width = 1280;
+	int height = 720;
   GLFWwindow* window;
 	const char* title = "SOLITUDE :: 0 FPS\0";
 

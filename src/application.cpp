@@ -3,18 +3,8 @@
 Application::Application()
 : fpp_camera(&window),
   master_renderer(window.getWidth()/window.getHeight()),
-  light(vec3(0.0f,500.0f,200.0f), vec3(1.0f,1.0f,1.0f)),
-  backTexture(loadDDS("./res/grassy2.dds")),
-  rTexture(loadDDS("./res/mud.dds")),
-  gTexture(loadDDS("./res/grassFlowers.dds")),
-  bTexture(loadDDS("./res/path.dds")),
-  texturePack(&backTexture, &rTexture, &gTexture, &bTexture),
-  blendMap(loadDDS("./res/blendMap.dds"))
+  light(vec3(0.0f,500.0f,200.0f), vec3(1.0f,1.0f,1.0f))
 {
-  terrains.push_back(make_unique<Terrain>(0,0,&texturePack, &blendMap));
-  terrains.push_back(make_unique<Terrain>(-1,0,&texturePack, &blendMap));
-  terrains.push_back(make_unique<Terrain>(0,-1,&texturePack, &blendMap));
-  terrains.push_back(make_unique<Terrain>(-1,-1,&texturePack, &blendMap));
   populate();
 }
 
@@ -28,10 +18,13 @@ void Application::run()
   {
     window.update();
     fps_counter.update(&window, window.getElapsedTime());
-    fpp_camera.move(terrains[0].get(), window.getElapsedTime());
+    fpp_camera.move(terrain_master.getTerrain(fpp_camera.getPosition().x,
+      fpp_camera.getPosition().z),window.getElapsedTime());
 
-    for(auto& terrain : terrains)
-      master_renderer.processTerrain(terrain.get());
+    master_renderer.processTerrain(terrain_master.getTerrain(0,0));
+    master_renderer.processTerrain(terrain_master.getTerrain(-1,0));
+    master_renderer.processTerrain(terrain_master.getTerrain(0,-1));
+    master_renderer.processTerrain(terrain_master.getTerrain(-1,-1));
     for(auto& entity : entities)
      master_renderer.processEntity(entity.get());
 
@@ -78,25 +71,25 @@ void Application::populate()
   {
     float x = Random::randomFloat(20.0f,1000.0f);
     float z = Random::randomFloat(20.0f,1000.0f);
-    entities.push_back(make_unique<Entity>(tree,vec3(x,terrains[0].get()->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 8.0f));
+    entities.push_back(make_unique<Entity>(tree,vec3(x,terrain_master.getTerrain((int)x,(int)z)->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 8.0f));
   }
   for(int i = 0; i < num_poly_trees; i++)
   {
     float x = Random::randomFloat(20.0f,1000.0f);
     float z = Random::randomFloat(20.0f,1000.0f);
-    entities.push_back(make_unique<Entity>(poly_tree,vec3(x,terrains[0].get()->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.7f));
+    entities.push_back(make_unique<Entity>(poly_tree,vec3(x,terrain_master.getTerrain((int)x,(int)z)->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.7f));
   }
   for(int i = 0; i < num_fern; i++)
   {
     float x = Random::randomFloat(20.0f,1000.0f);
     float z = Random::randomFloat(20.0f,1000.0f);
     int n = Random::randomInt(0,4);
-    entities.push_back(make_unique<Entity>(fern,vec3(x,terrains[0].get()->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.4f, n));
+    entities.push_back(make_unique<Entity>(fern,vec3(x,terrain_master.getTerrain((int)x,(int)z)->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.4f, n));
   }
   for(int i = 0; i < num_grass; i++)
   {
     float x = Random::randomFloat(20.0f,1000.0f);
     float z = Random::randomFloat(20.0f,1000.0f);
-    entities.push_back(make_unique<Entity>(grass,vec3(x,terrains[0].get()->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.8f));
+    entities.push_back(make_unique<Entity>(grass,vec3(x,terrain_master.getTerrain((int)x,(int)z)->getHeightOfTerrain(x,z),z),vec3(0.0f,0.0f,0.0f), 0.8f));
   }
 }

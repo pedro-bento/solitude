@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #include <memory>
+#include <vector>
 using namespace std;
 
 #include "window.h"
@@ -19,6 +20,7 @@ using namespace std;
 #include "./entities/entity.h"
 #include "./entities/light.h"
 #include "./renderer/master_renderer.h"
+#include "./terrain/terrain_master.h"
 #include "./terrain/terrain.h"
 #include "./entities/player.h"
 #include "./utilities/maths.h"
@@ -31,16 +33,7 @@ class Application
   StaticShader static_shader;
   MasterRenderer master_renderer;
   Light light;
-
-  // change
-  TerrainTexture backTexture;
-  TerrainTexture rTexture;
-  TerrainTexture gTexture;
-  TerrainTexture bTexture;
-  TerrainTexturePack texturePack;
-  TerrainTexture blendMap;
-
-  vector<unique_ptr<Terrain>> terrains;
+  TerrainMaster terrain_master;
 
   vector<unique_ptr<Entity>> entities;
 

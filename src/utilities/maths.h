@@ -31,7 +31,7 @@ namespace Random
   {
     seed += 0xe120fc15;
     uint64_t tmp;
-    tmp = (uint64_t)seed * 0x4a39b70d;
+    tmp = (int64_t)seed * 0x4a39b70d;
     uint32_t m1 = (tmp >> 32) ^ tmp;
     tmp = (uint64_t)m1 * 0x12fad5c9;
     uint32_t m2 = (tmp >> 32) ^ tmp;
@@ -54,9 +54,9 @@ class PerlinNoise
 private:
   uint32_t seed = 13487;
   int octaves = 3;
-  float frequency = 0.3f;
-  float amplitude = 100.0f;
-  float lacunarity = 0.5f;
+  float frequency = 0.1f;
+  float amplitude = 10.0f;
+  float lacunarity = 2.0f;
   float presistence = 0.5f;
 
 public:
@@ -77,7 +77,7 @@ public:
 
     for(int i = 0; i < octaves; i++)
     {
-      total += getInterpolatedNoise(x * freq, z * freq) * amp;
+      total += getInterpolatedNoise(abs(x) * freq, abs(z) * freq) * amp;
       denom += amp;
 
       freq *= lacunarity;

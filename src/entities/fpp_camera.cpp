@@ -47,6 +47,7 @@ void FPPCamera::move(Terrain* terrain, float elapsed_time)
     position.y = terrainHeight + PLAYER_HEIGHT;
     isInAir = false;
   }
+
 }
 
 void FPPCamera::jump()
