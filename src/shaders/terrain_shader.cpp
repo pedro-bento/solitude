@@ -1,8 +1,10 @@
 #include "terrain_shader.h"
 
 TerrainShader::TerrainShader()
-	: Shader("./glsl/terrainVertexShader.glsl",
-					 "./glsl/terrainFragmentShader.glsl")
+: Shader("./glsl/terrainVertexShader.glsl",
+				 "./glsl/terrainFragmentShader.glsl"),
+	location_lightPosition(MAX_LIGHTS),
+	location_lightColour(MAX_LIGHTS)
 {
 	getAllUniformLocations();
 }
@@ -16,8 +18,6 @@ void TerrainShader::getAllUniformLocations()
 	location_transformationMatrix = Shader::getUniformLocation("transformationMatrix");
 	location_projectionMatrix = Shader::getUniformLocation("projectionMatrix");
 	location_viewMatrix = Shader::getUniformLocation("viewMatrix");
-	location_lightPosition = Shader::getUniformLocation("lightPosition");
-	location_lightColour = Shader::getUniformLocation("lightColour");
 	location_shineDamper = Shader::getUniformLocation("shineDamper");
 	location_reflectivity = Shader::getUniformLocation("reflectivity");
 	location_skyColour = Shader::getUniformLocation("skyColour");
@@ -26,6 +26,14 @@ void TerrainShader::getAllUniformLocations()
   location_gTexture = Shader::getUniformLocation("gTexture");
   location_bTexture = Shader::getUniformLocation("bTexture");
   location_blendMap = Shader::getUniformLocation("blendMap");
+
+	for(int i = 0; i < MAX_LIGHTS; i++)
+	{
+		string lp = "lightPosition[" + to_string(i) + "]";
+		location_lightPosition[i] = Shader::getUniformLocation(lp.c_str());
+		string lc = "lightColour[" + to_string(i) + "]";
+		location_lightColour[i] = Shader::getUniformLocation(lc.c_str());
+	}
 }
 
 void TerrainShader::connectTextureUnits()
@@ -59,10 +67,21 @@ void TerrainShader::loadViewMatrix(FPPCamera* camera)
 	Shader::loadMatrix(location_viewMatrix, createViewMatrix(camera));
 }
 
-void TerrainShader::loadLight(Light* light)
+void TerrainShader::loadLights(vector<Light*> lights)
 {
- 	Shader::loadVector(location_lightPosition, light->getPosition());
-	Shader::loadVector(location_lightColour, light->getColour());
+	for(int i = 0; i < MAX_LIGHTS; i++)
+	{
+		if(i < lights.size())
+		{
+			Shader::loadVector(location_lightPosition[i], lights[i]->getPosition());
+			Shader::loadVector(location_lightColour[i], lights[i]->getColour());
+		}
+		else
+		{
+			Shader::loadVector(location_lightPosition[i], vec3(0.0f,0.0f,0.0f));
+			Shader::loadVector(location_lightColour[i], vec3(0.0f,0.0f,0.0f));
+		}
+	}
 }
 
 void TerrainShader::loadShineVariables(float damper, float reflectivity)

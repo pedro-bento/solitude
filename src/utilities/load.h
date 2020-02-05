@@ -19,9 +19,11 @@ using namespace std;
 #include "../models/raw_model.h"
 #include "../textures/model_texture.h"
 #include "../models/textured_model.h"
+#include "../models/simple_model.h"
 
 GLuint loadShader(const char* shaderPath, GLenum shader);
 shared_ptr<RawModel> loadRawModel(vector<GLfloat> vertices, vector<unsigned short> indices, vector<GLfloat> uvs, vector<GLfloat> normals);
+SimpleModel loadSimpleModel(vector<GLfloat> vertices);
 shared_ptr<ModelTexture> loadModelTexture(const char* texturePath);
 shared_ptr<TexturedModel> loadTexturedModel(const char* objPath, const char* texturePath);
 GLuint loadDDS(const char * imagepath);

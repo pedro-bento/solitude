@@ -24,6 +24,8 @@ using namespace std;
 #include "./terrain/terrain.h"
 #include "./entities/player.h"
 #include "./utilities/maths.h"
+#include "./guis/gui_texture.h"
+#include "./guis/gui_renderer.h"
 
 class Application
 {
@@ -32,7 +34,9 @@ class Application
   FpsCounter fps_counter;
   StaticShader static_shader;
   MasterRenderer master_renderer;
-  Light light;
+  Light light1;
+  Light light2;
+  Light light3;
   TerrainMaster terrain_master;
 
   vector<unique_ptr<Entity>> entities;

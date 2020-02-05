@@ -29,6 +29,7 @@ Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath)
 		vector<char> pogramErrorMessage((size_t)infoLogLength + 1);
 		glGetProgramInfoLog(programID, infoLogLength, NULL, &pogramErrorMessage[0]);
 		fprintf(stderr, "Failed to create shader program %s\n", &pogramErrorMessage[0]);
+		cin.get();
 		glDeleteProgram(programID);
 		exit(EXIT_FAILURE);
 	}

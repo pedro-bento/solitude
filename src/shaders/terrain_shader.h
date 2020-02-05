@@ -12,13 +12,19 @@ using namespace glm;
 #include "../entities/light.h"
 #include "../utilities/maths.h"
 
+#include <string>
+#include <vector>
+using namespace std;
+
 class TerrainShader : public Shader
 {
+  const int MAX_LIGHTS = 4;
+
   GLuint location_transformationMatrix;
   GLuint location_projectionMatrix;
   GLuint location_viewMatrix;
-  GLuint location_lightPosition;
-  GLuint location_lightColour;
+  vector<GLuint> location_lightPosition;
+  vector<GLuint> location_lightColour;
   GLuint location_shineDamper;
   GLuint location_reflectivity;
   GLuint location_skyColour;
@@ -39,7 +45,7 @@ public:
   void loadTransformationMatrix(mat4 matrix);
   void loadProjectionMatrix(mat4 matrix);
   void loadViewMatrix(FPPCamera* camera);
-  void loadLight(Light* light);
+  void loadLights(vector<Light*> lights);
   void loadShineVariables(float damper, float reflectivity);
   void loadSkyColour(vec3 colour);
 };

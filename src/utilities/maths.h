@@ -14,6 +14,7 @@ using namespace std;
 class FPPCamera;
 
 mat4 createTransformationMatrix(vec3 translation, vec3 rotation, float scale);
+mat4 createTransformationMatrix(vec2 translation, vec2 scale);
 mat4 createViewMatrix(FPPCamera* camera);
 
 // calculate barycentric coordinate on triangle
@@ -56,8 +57,8 @@ private:
   int octaves = 3;
   float frequency = 0.1f;
   float amplitude = 10.0f;
-  float lacunarity = 2.0f;
-  float presistence = 0.5f;
+  float lacunarity = 0.9f;
+  float presistence = 1.0f/lacunarity;
 
 public:
   PerlinNoise() {}

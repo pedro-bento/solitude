@@ -1,7 +1,7 @@
 #include "fpp_camera.h"
 
 FPPCamera::FPPCamera(Window *_window)
-: window(_window)
+: pitch(-0.25f), window(_window)
 {
 }
 

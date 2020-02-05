@@ -27,6 +27,14 @@ shared_ptr<RawModel> loadRawModel(
         (GLsizei)indices.size());
 }
 
+SimpleModel loadSimpleModel(vector<GLfloat> vertices)
+{
+  return SimpleModel(
+    createVAO(),
+    bindDataBuffer(vertices),
+    (GLsizei)(vertices.size()/2));
+}
+
 shared_ptr<ModelTexture> loadModelTexture(const char* texturePath)
 {
     return make_shared<ModelTexture>(loadDDS(texturePath));
@@ -202,6 +210,7 @@ string readShaderFromFile(const char* filePath)
 	else
 	{
 		fprintf(stderr, "Failed to open %s\n", filePath);
+    cin.get();
 	}
 
 	return shaderCode;
@@ -223,6 +232,7 @@ void compileShader(GLuint shaderID, string shaderCode)
 		glGetShaderInfoLog(shaderID, infoLogLength, NULL, &shaderErrorMessage[0]);
 		glDeleteShader(shaderID);
 		fprintf(stderr, "Failed to compile shader %s\n", &shaderErrorMessage[0]);
+    cin.get();
 	}
 
 }

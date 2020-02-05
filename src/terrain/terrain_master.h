@@ -15,8 +15,8 @@ using namespace std;
 class TerrainMaster
 {
   const float SIZE = 1024;
-  const float VERTEX_COUNT = SIZE/8.0f;
-  const float MAX_HEIGHT = 200;
+  const float VERTEX_COUNT = SIZE/16.0f;
+  const float MAX_HEIGHT = 300;
 
   PerlinNoise noise;
   TerrainTexture backTexture;

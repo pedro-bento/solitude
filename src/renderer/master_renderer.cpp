@@ -21,20 +21,20 @@ void MasterRenderer::prepare()
 	glClearColor(skyColour.x, skyColour.y, skyColour.z, 1.0f);
 }
 
-void MasterRenderer::render(Light* sun, FPPCamera* camera)
+void MasterRenderer::render(vector<Light*> lights, FPPCamera* camera)
 {
   prepare();
 
   static_shader.start();
 	static_shader.loadSkyColour(skyColour);
-  static_shader.loadLight(sun),
+  static_shader.loadLights(lights),
   static_shader.loadViewMatrix(camera);
   entity_renderer.render(entities);
   static_shader.stop();
 
 	terrain_shader.start();
 	terrain_shader.loadSkyColour(skyColour);
-	terrain_shader.loadLight(sun),
+	terrain_shader.loadLights(lights),
   terrain_shader.loadViewMatrix(camera);
 	terrain_renderer.render(terrains);
 	terrain_shader.stop();

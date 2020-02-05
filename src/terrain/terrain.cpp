@@ -5,7 +5,7 @@ Terrain::Terrain(int gridX, int gridZ, TerrainTexturePack* _texturePack,
   TerrainTexture* _blendMap, PerlinNoise* _noise,
   float size, float vertex_count, float max_height)
 : texturePack(_texturePack), blendMap(_blendMap),
-  heights(VERTEX_COUNT + 1, vector<float>(VERTEX_COUNT + 1)),
+  heights(VERTEX_COUNT, vector<float>(VERTEX_COUNT)),
   noise(_noise), SIZE(size), VERTEX_COUNT(vertex_count),
   MAX_HEIGHT(max_height)
 {
@@ -29,7 +29,7 @@ float Terrain::getHeightOfTerrain(float worldX, float worldZ)
   float gridSquareSize = SIZE / (VERTEX_COUNT - 1);
   int gridX = (int)floor(terrainX/gridSquareSize);
   int gridZ = (int)floor(terrainZ/gridSquareSize);
-  
+
   float xCoord = fmod(terrainX,gridSquareSize)/gridSquareSize;
   float zCoord = fmod(terrainZ,gridSquareSize)/gridSquareSize;
 

@@ -12,6 +12,14 @@ mat4 createTransformationMatrix(vec3 translation, vec3 rotation, float scale)
 	return matrix;
 }
 
+mat4 createTransformationMatrix(vec2 translation, vec2 scale)
+{
+	mat4 matrix(1.0f);
+	matrix = translate(matrix, vec3(translation.x,translation.y,0.0f));
+	matrix = glm::scale(matrix, vec3(scale.x,scale.y,1.0f));
+	return matrix;
+}
+
 mat4 createViewMatrix(FPPCamera* camera)
 {
 	vec3 direction(cos(camera->getPitch()) * sin(camera->getYaw()),

@@ -49,7 +49,7 @@ public:
   }
 
   void prepare();
-  void render(Light* sun, FPPCamera* camera);
+  void render(vector<Light*> lights, FPPCamera* camera);
   void processEntity(Entity* entity);
   void processTerrain(Terrain* terrain);
 };
