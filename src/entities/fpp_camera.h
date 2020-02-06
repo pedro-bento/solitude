@@ -17,16 +17,16 @@ using namespace std;
 
 class FPPCamera
 {
-	vec3 position = vec3(0.0f,0.0f,0.0f);;
+	vec3 position = vec3(0.0f,0.0f,0.0f);
 	float pitch = -0.25f;
 	float yaw = 0.0f;
 	float roll = 0.0f;
 
-	const float mouse_speed = 0.3f;
-	const float speed = 16.0f;
+	const float mouse_speed = 0.8f;
+	const float speed = 18.0f;
 	const float PLAYER_HEIGHT = 8.0f;
-	const float GRAVITY = -100;
-  const float JUMP_POWER = 35;
+	const float GRAVITY = -40;
+  const float JUMP_POWER = 15;
 	float upwardsSpeed = 0;
   bool isInAir = false;
 
