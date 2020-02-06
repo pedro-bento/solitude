@@ -15,11 +15,12 @@ using namespace glm;
 #include "entity_renderer.h"
 #include "../models/textured_model.h"
 #include "../entities/entity.h"
-#include "../entities/light.h"
-#include "../entities/fpp_camera.h"
 #include "terrain_renderer.h"
 #include "../shaders/terrain_shader.h"
-#include "../terrain/terrain.h"
+
+class FPPCamera;
+class Terrain;
+class Light;
 
 class MasterRenderer
 {

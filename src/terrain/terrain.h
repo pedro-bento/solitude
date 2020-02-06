@@ -16,10 +16,6 @@ using namespace glm;
 
 class Terrain
 {
-  float SIZE = 1;
-  float VERTEX_COUNT = 1;
-  float MAX_HEIGHT = 1;
-
   float x, z;
   float xOffset, zOffset;
 
@@ -31,8 +27,7 @@ class Terrain
 
 public:
   Terrain(int gridX, int gridZ, TerrainTexturePack* _texturePack,
-    TerrainTexture* _blendMap, PerlinNoise* _noise,
-    float size, float vertex_count, float max_height);
+    TerrainTexture* _blendMap, PerlinNoise* _noise);
   ~Terrain();
 
   float getX() { return x; }

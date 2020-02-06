@@ -12,8 +12,8 @@ using namespace glm;
 #include <cmath>
 using namespace std;
 
-#include "../window.h"
-#include "../terrain/terrain.h"
+class Window;
+class Terrain;
 
 class FPPCamera
 {
@@ -22,11 +22,6 @@ class FPPCamera
 	float yaw = 0.0f;
 	float roll = 0.0f;
 
-	const float mouse_speed = 0.8f;
-	const float speed = 100.0f;
-	const float PLAYER_HEIGHT = 8.0f;
-	const float GRAVITY = -40;
-  const float JUMP_POWER = 15;
 	float upwardsSpeed = 0;
   bool isInAir = false;
 

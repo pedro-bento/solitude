@@ -1,8 +1,13 @@
 #include "master_renderer.h"
+#include "../config.h"
+#include "../entities/fpp_camera.h"
+#include "../terrain/terrain.h"
+#include "../entities/light.h"
 
 MasterRenderer::MasterRenderer(float aspectRatio)
-: skyColour(0.6f, 0.76f, 0.87f),
-	projectionMatrix(perspective(radians(70.0f), aspectRatio, 0.1f, 512.0f)),
+: skyColour(config.skyColour),
+	projectionMatrix(perspective(radians(config.FOV),
+		aspectRatio, 0.2f, config.viewDistance)),
 	entity_renderer(&static_shader, projectionMatrix),
 	terrain_renderer(&terrain_shader, projectionMatrix)
 {

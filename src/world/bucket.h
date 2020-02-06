@@ -17,50 +17,14 @@ class Bucket
   MasterRenderer* renderer;
 
 public:
-  Bucket(int worldX, int worldZ, int size, int vertex_count, int max_height,
-    PerlinNoise* noise, TerrainTexturePack* pack, TerrainTexture* blendMap,
-    MasterRenderer* _renderer)
-  : terrain(worldX/size, worldZ/size, pack, blendMap, noise,
-            size, vertex_count, max_height),
-    renderer(_renderer)
-  {
-    shared_ptr<TexturedModel> tree =
-      loadTexturedModel("./res/pine.obj","./res/pine.dds");
-
-    for(int i = 0; i < 6; i++)
-    {
-      float x = Random::randomFloat(worldX, worldX + size);
-      float z = Random::randomFloat(worldZ, worldZ + size);
-      entities.push_back(make_unique<Entity>(
-        tree,vec3(x,terrain.getHeightOfTerrain(x,z),z),
-        vec3(0.0f,0.0f,0.0f),1.0f));
-    }
-
-    if(worldX/size == 0 && worldZ/size == 0)
-    {
-      shared_ptr<TexturedModel> lamp =
-        loadTexturedModel("./res/lamp.obj","./res/lamp.dds");
-
-      entities.push_back(make_unique<Entity>(
-        lamp,vec3(10,terrain.getHeightOfTerrain(worldX+10,worldX+10),10),
-        vec3(0.0f,0.0f,0.0f),1.0f));
-    }
-  }
-
-  ~Bucket()
-  {
-  }
+  Bucket(int worldX, int worldZ, PerlinNoise* noise, TerrainTexturePack* pack,
+    TerrainTexture* blendMap, MasterRenderer* _renderer);
+  ~Bucket();
 
   int getGridX() { return terrain.getX(); }
   int getGridZ() { return terrain.getZ(); }
   Terrain* getTerrain() { return &terrain; }
-
-  void render()
-  {
-    renderer->processTerrain(&terrain);
-    for(auto entity : entities)
-      renderer->processEntity(entity.get());
-  }
+  void render();
 };
 
 #endif

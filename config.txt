@@ -1,0 +1,11 @@
+FOV 70.0
+viewDistance 500.0
+mouseSensitivity 0.3
+runSpeed 50.0
+playerHeight 6.5
+jumpPower 15
+skyColour 0.6 0.76 0.87
+bucketSize 256
+bucketVertexCount 16
+bucketMaxHeight 100.0
+gravity -40
