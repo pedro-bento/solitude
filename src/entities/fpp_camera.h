@@ -23,7 +23,7 @@ class FPPCamera
 	float roll = 0.0f;
 
 	const float mouse_speed = 0.8f;
-	const float speed = 18.0f;
+	const float speed = 100.0f;
 	const float PLAYER_HEIGHT = 8.0f;
 	const float GRAVITY = -40;
   const float JUMP_POWER = 15;

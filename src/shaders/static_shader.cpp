@@ -4,7 +4,8 @@ StaticShader::StaticShader()
 : Shader("./glsl/vertexShader.glsl",
 				 "./glsl/fragmentShader.glsl"),
   location_lightPosition(MAX_LIGHTS),
- 	location_lightColour(MAX_LIGHTS)
+ 	location_lightColour(MAX_LIGHTS),
+	location_attenuation(MAX_LIGHTS)
 {
 	getAllUniformLocations();
 }
@@ -31,6 +32,8 @@ void StaticShader::getAllUniformLocations()
 		location_lightPosition[i] = Shader::getUniformLocation(lp.c_str());
 		string lc = "lightColour[" + to_string(i) + "]";
 		location_lightColour[i] = Shader::getUniformLocation(lc.c_str());
+		string a = "attenuation[" + to_string(i) + "]";
+		location_attenuation[i] = Shader::getUniformLocation(a.c_str());
 	}
 }
 
@@ -64,11 +67,13 @@ void StaticShader::loadLights(vector<Light*> lights)
 		{
 			Shader::loadVector(location_lightPosition[i], lights[i]->getPosition());
 			Shader::loadVector(location_lightColour[i], lights[i]->getColour());
+			Shader::loadVector(location_attenuation[i], lights[i]->getAttenuation());
 		}
 		else
 		{
 			Shader::loadVector(location_lightPosition[i], vec3(0.0f,0.0f,0.0f));
 			Shader::loadVector(location_lightColour[i], vec3(0.0f,0.0f,0.0f));
+			Shader::loadVector(location_attenuation[i], vec3(1.0f,0.0f,0.0f));
 		}
 	}
 }

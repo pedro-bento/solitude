@@ -54,11 +54,11 @@ class PerlinNoise
 {
 private:
   uint32_t seed = 13487;
-  int octaves = 3;
-  float frequency = 0.4f;
-  float amplitude = 100.0f;
+  int octaves = 2;
+  float frequency = 0.3f;
+  float amplitude = 1000.0f;
   float lacunarity = 1.0f;
-  float presistence = 1.0f/lacunarity;
+  float presistence = 2.0f;
 
 public:
   PerlinNoise() {}

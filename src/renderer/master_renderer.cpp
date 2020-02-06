@@ -1,7 +1,7 @@
 #include "master_renderer.h"
 
 MasterRenderer::MasterRenderer(float aspectRatio)
-: skyColour(0.53f, 0.81f, 0.98f),
+: skyColour(0.6f, 0.76f, 0.87f),
 	projectionMatrix(perspective(radians(70.0f), aspectRatio, 0.1f, 512.0f)),
 	entity_renderer(&static_shader, projectionMatrix),
 	terrain_renderer(&terrain_shader, projectionMatrix)

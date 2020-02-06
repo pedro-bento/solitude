@@ -27,9 +27,6 @@ public:
 
 private:
   void handleEvents();
-
-  // change
-  void populate();
 };
 
 #endif // APPLICATION_H

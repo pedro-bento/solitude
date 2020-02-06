@@ -25,6 +25,7 @@ class StaticShader : public Shader
 	GLuint location_viewMatrix;
 	vector<GLuint> location_lightPosition;
   vector<GLuint> location_lightColour;
+	vector<GLuint> location_attenuation;
 	GLuint location_shineDamper;
 	GLuint location_reflectivity;
 	GLuint location_useFakeLighting;

@@ -21,9 +21,9 @@ using namespace std;
 
 class World
 {
-  const float SIZE = 128;
+  const float SIZE = 256;
   const float VERTEX_COUNT = SIZE/16.0f;
-  const float MAX_HEIGHT = 100;
+  const float MAX_HEIGHT = 50;
 
   PerlinNoise noise;
   TerrainTexturePack texturePack;
@@ -49,7 +49,10 @@ public:
       &noise, &texturePack, &blendMap, &renderer);
 
     lights.push_back(make_unique<Light>(
-      vec3(0.0f,1000.0f,300.0f), vec3(1.0f,1.0f,1.0f)));
+      vec3(0.0f,1000.0f,300.0f), vec3(0.4f,0.4f,0.4f)));
+    lights.push_back(make_unique<Light>(
+      vec3(10.0f,getBucket(10.0f,10.0f)->getTerrain()->getHeightOfTerrain(10.0f,10.0f)+10,10.0f),
+      vec3(1.0f,1.0f,1.0f), vec3(1.0f,0.01f,0.002f)));
 
     guis.push_back(make_unique<GuiTexture>(
       loadDDS("./res/health.dds"), vec2(-0.75f, 0.9f), vec2(0.2f, 0.2f)));
@@ -97,8 +100,8 @@ public:
     vec3 p = player.getPosition();
     getBucket(p.x,p.z)->render();
 
-    //for(auto& it : buckets)
-      //it.second->render();
+    for(auto& it : buckets)
+      it.second->render();
 
     renderer.render(lights_ptr, &player);
     gui_renderer.render(guis_ptr);

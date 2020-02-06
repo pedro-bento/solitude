@@ -35,6 +35,16 @@ public:
         tree,vec3(x,terrain.getHeightOfTerrain(x,z),z),
         vec3(0.0f,0.0f,0.0f),1.0f));
     }
+
+    if(worldX/size == 0 && worldZ/size == 0)
+    {
+      shared_ptr<TexturedModel> lamp =
+        loadTexturedModel("./res/lamp.obj","./res/lamp.dds");
+
+      entities.push_back(make_unique<Entity>(
+        lamp,vec3(10,terrain.getHeightOfTerrain(worldX+10,worldX+10),10),
+        vec3(0.0f,0.0f,0.0f),1.0f));
+    }
   }
 
   ~Bucket()
