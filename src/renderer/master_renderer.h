@@ -17,6 +17,7 @@ using namespace glm;
 #include "../entities/entity.h"
 #include "terrain_renderer.h"
 #include "../shaders/terrain_shader.h"
+#include "../skybox/skybox_renderer.h"
 
 class FPPCamera;
 class Terrain;
@@ -30,6 +31,7 @@ class MasterRenderer
   EntityRenderer entity_renderer;
   TerrainShader terrain_shader;
   TerrainRenderer terrain_renderer;
+  SkyboxRenderer skybox_renderer;
 
   unordered_map<shared_ptr<TexturedModel>, vector<Entity*>> entities;
   vector<Terrain*> terrains;

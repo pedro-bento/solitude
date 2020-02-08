@@ -1,5 +1,8 @@
 #include "load.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 string readShaderFromFile(const char* filePath);
 void compileShader(GLuint shaderID, string shaderCode);
 GLuint createVAO();
@@ -27,12 +30,12 @@ shared_ptr<RawModel> loadRawModel(
         (GLsizei)indices.size());
 }
 
-SimpleModel loadSimpleModel(vector<GLfloat> vertices)
+SimpleModel loadSimpleModel(vector<GLfloat> vertices, int dimentions)
 {
   return SimpleModel(
     createVAO(),
     bindDataBuffer(vertices),
-    (GLsizei)(vertices.size()/2));
+    (GLsizei)(vertices.size()/dimentions));
 }
 
 shared_ptr<ModelTexture> loadModelTexture(const char* texturePath)
@@ -193,6 +196,34 @@ bool loadAssImp(const char * path,
 	}
 
 	return true;
+}
+
+GLuint loadCubeMap(vector<char*> texturePath)
+{
+  GLuint textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+  int width;
+  int height;
+  int n;
+  unsigned char* data;
+
+  for(int i = 0; i < 6; i++)
+  {
+    data = stbi_load(texturePath[i], &width, &height, &n, 4);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA,
+      (GLsizei)width, (GLsizei)height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    stbi_image_free(data);
+  }
+
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+  return textureID;
 }
 
 string readShaderFromFile(const char* filePath)

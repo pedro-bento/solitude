@@ -15,8 +15,8 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition[4];
 
-const float density = 0.0024;
-const float gradient = 6.5;
+const float density = 0.00;
+const float gradient = 3.0;
 
 void main()
 {

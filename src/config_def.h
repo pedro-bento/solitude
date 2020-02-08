@@ -8,7 +8,7 @@ struct Config
 {
   // Player
   float FOV = 70.0f;
-  float viewDistance = 200.0f;
+  float viewDistance = 512.0f;
   float mouseSensitivity = 0.3f;
   float runSpeed = 30.0f;
   float playerHeight = 6.5f;

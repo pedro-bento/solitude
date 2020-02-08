@@ -1,5 +1,5 @@
 FOV 70.0
-viewDistance 500.0
+viewDistance 512.0
 mouseSensitivity 0.3
 runSpeed 50.0
 playerHeight 6.5

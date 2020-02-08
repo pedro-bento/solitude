@@ -9,7 +9,8 @@ MasterRenderer::MasterRenderer(float aspectRatio)
 	projectionMatrix(perspective(radians(config.FOV),
 		aspectRatio, 0.2f, config.viewDistance)),
 	entity_renderer(&static_shader, projectionMatrix),
-	terrain_renderer(&terrain_shader, projectionMatrix)
+	terrain_renderer(&terrain_shader, projectionMatrix),
+	skybox_renderer(projectionMatrix)
 {
 	enableCulling();
 }
@@ -43,6 +44,8 @@ void MasterRenderer::render(vector<Light*> lights, FPPCamera* camera)
   terrain_shader.loadViewMatrix(camera);
 	terrain_renderer.render(terrains);
 	terrain_shader.stop();
+
+	skybox_renderer.render(camera);
 
 	terrains.clear();
   entities.clear();

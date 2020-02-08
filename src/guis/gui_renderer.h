@@ -22,7 +22,7 @@ class GuiRenderer
 
 public:
   GuiRenderer() : quad(loadSimpleModel(
-    vector<GLfloat>{ -1.0f,1.0f,-1.0f,-1.0f,1.0f,1.0f,1.0f,-1.0f})){}
+    vector<GLfloat>{ -1.0f,1.0f,-1.0f,-1.0f,1.0f,1.0f,1.0f,-1.0f}, 2)){}
   ~GuiRenderer() {}
 
   void render(vector<GuiTexture*> guis)

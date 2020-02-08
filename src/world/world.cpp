@@ -12,7 +12,7 @@ World::World(Window* _window)
   buckets["(0,0)"] = make_unique<Bucket>(0, 0, &noise, &texturePack, &blendMap, &renderer);
 
   lights.push_back(make_unique<Light>(
-    vec3(0.0f,1000.0f,300.0f), vec3(0.4f,0.4f,0.4f)));
+    vec3(0.0f,1000.0f,300.0f), vec3(1.0f,1.0f,1.0f)));
   lights.push_back(make_unique<Light>(
     vec3(10.0f,getBucket(10.0f,10.0f)->getTerrain()->getHeightOfTerrain(10.0f,10.0f)+10,10.0f),
     vec3(1.0f,1.0f,1.0f), vec3(1.0f,0.01f,0.002f)));
