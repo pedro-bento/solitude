@@ -36,21 +36,23 @@ void FPPCamera::move(Terrain* terrain, float elapsed_time)
       position -= right * elapsed_time * config.runSpeed;
   }
 
-  if(glfwGetKey(window->getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
+  if(isFreeCam == false)
   {
-    jump();
-  }
+    if(glfwGetKey(window->getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
+    {
+      jump();
+    }
 
-  upwardsSpeed += config.gravity * elapsed_time;
-  position.y += upwardsSpeed * elapsed_time;
-  float terrainHeight = terrain->getHeightOfTerrain(position.x, position.z);
-  if(position.y < terrainHeight + config.playerHeight)
-  {
-    upwardsSpeed = 0;
-    position.y = terrainHeight + config.playerHeight;
-    isInAir = false;
+    upwardsSpeed += config.gravity * elapsed_time;
+    position.y += upwardsSpeed * elapsed_time;
+    float terrainHeight = terrain->getHeightOfTerrain(position.x, position.z);
+    if(position.y < terrainHeight + config.playerHeight)
+    {
+      upwardsSpeed = 0;
+      position.y = terrainHeight + config.playerHeight;
+      isInAir = false;
+    }
   }
-
 }
 
 void FPPCamera::jump()

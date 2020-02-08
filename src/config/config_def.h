@@ -8,17 +8,17 @@ struct Config
 {
   // Player
   float FOV = 70.0f;
-  float viewDistance = 512.0f;
+  float viewDistance = 1024.0f;
   float mouseSensitivity = 0.3f;
-  float runSpeed = 30.0f;
+  float runSpeed = 20.0f;
   float playerHeight = 6.5f;
   float jumpPower = 15;
 
   // World
-  vec3 skyColour = vec3(0.6f, 0.76f, 0.87f);
-  float bucketSize = 256;
+  vec3 skyColour = vec3(0.5444f, 0.62f, 0.69f);
+  float bucketSize = 1024.0f;
   float bucketVertexCount = bucketSize/16.0f;
-  float bucketMaxHeight = 50.0f;
+  float bucketMaxHeight = 80.0f;
   float gravity = -40;
 };
 

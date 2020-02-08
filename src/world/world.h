@@ -7,6 +7,9 @@
 #include <string>
 using namespace std;
 
+#include <glm/glm.hpp>
+using namespace glm;
+
 #include "bucket.h"
 #include "../window.h"
 #include "../utilities/load.h"
@@ -36,7 +39,9 @@ public:
   World(Window* _window);
   ~World();
 
+  vec2 getGridPos(float worldX, float worldZ);
   Bucket* getBucket(float x, float z);
+  Bucket* getBucketGrid(int gridX, int gridZ);
   void render();
   void update();
 };

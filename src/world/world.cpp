@@ -6,13 +6,11 @@ World::World(Window* _window)
 : window(_window),
   renderer(window->getWidth()/window->getHeight()),
   player(window),
-  texturePack("./res/grass.dds", "./res/mud.dds", "./res/grassFlowers.dds", "./res/grassy2.dds"),
+  texturePack("./res/grassy2.dds", "./res/mud.dds", "./res/grassFlowers.dds", "./res/path.dds"),
   blendMap(loadDDS("./res/blendMap.dds"))
 {
-  buckets["(0,0)"] = make_unique<Bucket>(0, 0, &noise, &texturePack, &blendMap, &renderer);
-
   lights.push_back(make_unique<Light>(
-    vec3(0.0f,1000.0f,300.0f), vec3(1.0f,1.0f,1.0f)));
+    vec3(0.0f,100000.0f,-3000.0f), vec3(1.0f,1.0f,1.0f)));
   lights.push_back(make_unique<Light>(
     vec3(10.0f,getBucket(10.0f,10.0f)->getTerrain()->getHeightOfTerrain(10.0f,10.0f)+10,10.0f),
     vec3(1.0f,1.0f,1.0f), vec3(1.0f,0.01f,0.002f)));
@@ -21,20 +19,45 @@ World::World(Window* _window)
     loadDDS("./res/health.dds"), vec2(-0.75f, 0.9f), vec2(0.2f, 0.2f)));
   guis.push_back(make_unique<GuiTexture>(
     loadDDS("./res/crosshair.dds"), vec2(0.0f, 0.0f), vec2(0.04f, 0.04f)));
+
+  for(int i = -2; i <= 2; i++)
+    for(int j = -2; j <= 2; j++)
+    {
+      getBucketGrid(i,j);
+    }
 }
 
 World::~World()
 {
 }
 
+vec2 World::getGridPos(float worldX, float worldZ)
+{
+  float xOffset = worldX < 0.0f ? -1.0f : 0.0f;
+  float zOffset = worldZ < 0.0f ? -1.0f : 0.0f;
+
+  int gridX = (int)((worldX / config.bucketSize) + xOffset);
+  int gridZ = (int)((worldZ / config.bucketSize) + zOffset);
+
+  return vec2(gridX, gridZ);
+}
+
 Bucket* World::getBucket(float x, float z)
 {
-  float xOffset = x < 0.0f ? -1.0f : 0.0f;
-  float zOffset = z < 0.0f ? -1.0f : 0.0f;
+  vec2 gridPos = getGridPos(x,z);
 
-  int gridX = (int)((x / config.bucketSize) + xOffset);
-  int gridZ = (int)((z / config.bucketSize) + zOffset);
+  string pos = "(" + to_string(gridPos.x) + "," + to_string(gridPos.y) + ")";
 
+  if(buckets.find(pos) == buckets.end())
+    buckets[pos] = make_unique<Bucket>(gridPos.x*config.bucketSize,
+      gridPos.y*config.bucketSize, &noise, &texturePack,
+      &blendMap, &renderer);
+
+  return buckets[pos].get();
+}
+
+Bucket* World::getBucketGrid(int gridX, int gridZ)
+{
   string pos = "(" + to_string(gridX) + "," + to_string(gridZ) + ")";
 
   if(buckets.find(pos) == buckets.end())
@@ -62,11 +85,20 @@ void World::render()
     guis_ptr.push_back(gui.get());
   }
 
-  vec3 p = player.getPosition();
-  getBucket(p.x,p.z)->render();
+  vec3 pos = player.getPosition();
+  vec2 grid = getGridPos(pos.x, pos.z);
 
-  for(auto& it : buckets)
-    it.second->render();
+  getBucketGrid(grid.x, grid.y)->render();
+
+  getBucketGrid(grid.x-1, grid.y)->render();
+  getBucketGrid(grid.x+1, grid.y)->render();
+  getBucketGrid(grid.x, grid.y-1)->render();
+  getBucketGrid(grid.x, grid.y+1)->render();
+
+  getBucketGrid(grid.x-1, grid.y-1)->render();
+  getBucketGrid(grid.x-1, grid.y+1)->render();
+  getBucketGrid(grid.x+1, grid.y-1)->render();
+  getBucketGrid(grid.x+1, grid.y+1)->render();
 
   renderer.render(lights_ptr, &player);
   gui_renderer.render(guis_ptr);

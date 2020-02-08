@@ -9,14 +9,40 @@ Bucket::Bucket(int worldX, int worldZ, PerlinNoise* noise, TerrainTexturePack* p
 {
   shared_ptr<TexturedModel> tree =
     loadTexturedModel("./res/pine.obj","./res/pine.dds");
+  tree->getModelTexture()->setHasTransparency(true);
 
-  for(int i = 0; i < 6; i++)
+  shared_ptr<TexturedModel> poly =
+    loadTexturedModel("./res/lowPolyTree.obj","./res/lowPolyTree.dds");
+
+  shared_ptr<TexturedModel> fern =
+    loadTexturedModel("./res/fern.obj","./res/fern.dds");
+  fern->getModelTexture()->setNumberOfRows(2);
+
+  float x;
+  float z;
+
+  for(int i = 0; i < 20; i++)
   {
-    float x = Random::randomFloat(worldX, worldX + config.bucketSize);
-    float z = Random::randomFloat(worldZ, worldZ + config.bucketSize);
+    x = Random::randomFloat(worldX, worldX + config.bucketSize);
+    z = Random::randomFloat(worldZ, worldZ + config.bucketSize);
     entities.push_back(make_unique<Entity>(
       tree,vec3(x,terrain.getHeightOfTerrain(x,z),z),
+      vec3(0.0f,0.0f,0.0f),2.0f));
+
+    x = Random::randomFloat(worldX, worldX + config.bucketSize);
+    z = Random::randomFloat(worldZ, worldZ + config.bucketSize);
+    entities.push_back(make_unique<Entity>(
+      poly,vec3(x,terrain.getHeightOfTerrain(x,z),z),
       vec3(0.0f,0.0f,0.0f),1.0f));
+  }
+
+  for(int i = 0; i < 300; i++)
+  {
+    x = Random::randomFloat(worldX, worldX + config.bucketSize);
+    z = Random::randomFloat(worldZ, worldZ + config.bucketSize);
+    entities.push_back(make_unique<Entity>(
+      fern,vec3(x,terrain.getHeightOfTerrain(x,z),z),
+      vec3(0.0f,0.0f,0.0f),0.8f,Random::randomInt(0,4)));
   }
 
   if(worldX/config.bucketSize == 0 && worldZ/config.bucketSize == 0)

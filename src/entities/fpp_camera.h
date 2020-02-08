@@ -24,6 +24,7 @@ class FPPCamera
 
 	float upwardsSpeed = 0;
   bool isInAir = false;
+	bool isFreeCam = false;
 
 	Window* window;
 
